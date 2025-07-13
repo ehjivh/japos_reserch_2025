@@ -106,9 +106,20 @@ function getExistingAnswers(memberID) {
     const data = sheet.getDataRange().getValues();
     const answers = {};
 
-    for (let i = 1; i < data.length; i++) {
-      if (data[i][0] == memberID) {
-        answers[data[i][1]] = data[i][2]; // 設問ID: 回答内容
+    if (data.length > 1) {
+      const headers = data[0]; // ヘッダー行（1行目）
+      
+      // 該当会員の行を検索
+      for (let i = 1; i < data.length; i++) {
+        if (data[i][0] == memberID) {
+          // 設問IDの列から回答を取得（会員番号列は除外）
+          for (let j = 1; j < headers.length; j++) {
+            if (data[i][j] && data[i][j] !== '') {
+              answers[headers[j]] = data[i][j];
+            }
+          }
+          break;
+        }
       }
     }
 
@@ -131,27 +142,70 @@ function submitAnswers(memberID, answers) {
     const now = new Date();
     const timeString = Utilities.formatDate(now, Session.getScriptTimeZone(), "yyyy/MM/dd HH:mm:ss");
 
-    // 既存の回答を削除（同じ会員番号の行をクリア）
-    const existingData = answerSheet.getDataRange().getValues();
-    const rowsToDelete = [];
+    // 現在のデータとヘッダーを取得
+    const data = answerSheet.getDataRange().getValues();
+    let headers = [];
+    let memberRowIndex = -1;
 
-    for (let i = existingData.length - 1; i >= 1; i--) {
-      if (existingData[i][0] == memberID) {
-        rowsToDelete.push(i + 1);
+    // ヘッダー行が存在するかチェック
+    if (data.length > 0) {
+      headers = data[0];
+    } else {
+      // 初回の場合、ヘッダー行を作成
+      headers = ['会員番号'];
+      answerSheet.appendRow(headers);
+    }
+
+    // 該当会員の行を検索
+    for (let i = 1; i < data.length; i++) {
+      if (data[i][0] == memberID) {
+        memberRowIndex = i;
+        break;
       }
     }
 
-    // 行を削除（後ろから削除して行番号のずれを防ぐ）
-    rowsToDelete.forEach(rowNum => {
-      answerSheet.deleteRow(rowNum);
-    });
-
-    // 新しい回答を追加
-    Object.keys(answers).forEach(questionId => {
-      if (answers[questionId]) { // 空でない回答のみ保存
-        answerSheet.appendRow([memberID, questionId, answers[questionId], timeString]);
+    // 新しい設問IDがある場合、ヘッダーに追加
+    const questionIds = Object.keys(answers);
+    let headersUpdated = false;
+    
+    questionIds.forEach(questionId => {
+      if (!headers.includes(questionId)) {
+        headers.push(questionId);
+        headersUpdated = true;
       }
     });
+
+    // ヘッダーが更新された場合、シートに反映
+    if (headersUpdated) {
+      answerSheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    }
+
+    // 回答データの行を準備
+    const answerRow = new Array(headers.length).fill('');
+    answerRow[0] = memberID; // 会員番号
+
+    // 各設問IDの回答を対応する列に設定
+    questionIds.forEach(questionId => {
+      const columnIndex = headers.indexOf(questionId);
+      if (columnIndex !== -1 && answers[questionId]) {
+        answerRow[columnIndex] = answers[questionId];
+      }
+    });
+
+    // 既存の行がある場合は更新、ない場合は新規追加
+    if (memberRowIndex !== -1) {
+      // 既存の回答を保持しつつ新しい回答で上書き
+      const existingRow = data[memberRowIndex];
+      for (let i = 0; i < headers.length; i++) {
+        if (i < existingRow.length && existingRow[i] !== '' && answerRow[i] === '') {
+          answerRow[i] = existingRow[i]; // 既存の回答を保持
+        }
+      }
+      answerSheet.getRange(memberRowIndex + 1, 1, 1, headers.length).setValues([answerRow]);
+    } else {
+      // 新規行として追加
+      answerSheet.appendRow(answerRow);
+    }
 
     // 会員データの最終送信日時を更新
     const memberData = memberSheet.getDataRange().getValues();
