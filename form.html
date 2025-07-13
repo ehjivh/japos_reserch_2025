@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>アンケート調査システム</title>
+  <style>
+    body {
+      font-family: 'Hiragino Sans', 'ヒラギノ角ゴシック', 'Yu Gothic', 'メイリオ', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: #333;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 5px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    textarea:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .radio-group,
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .radio-group label,
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: normal;
+      margin-bottom: 0;
+      cursor: pointer;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      transition: background-color 0.3s;
+    }
+
+    .radio-group label:hover,
+    .checkbox-group label:hover {
+      background-color: #e9f5e9;
+    }
+
+    .radio-group input[type="radio"],
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    button.secondary {
+      background-color: #757575;
+    }
+
+    button.secondary:hover {
+      background-color: #616161;
+    }
+
+    .error {
+      color: #f44336;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .success {
+      color: #4CAF50;
+      font-size: 16px;
+      text-align: center;
+      padding: 20px;
+      background-color: #e8f5e8;
+      border-radius: 4px;
+    }
+
+    .user-info {
+      background-color: #e3f2fd;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      background-color: #fafafa;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      border-left: 4px solid #4CAF50;
+    }
+
+    .question-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .required {
+      color: #f44336;
+      font-size: 12px;
+    }
+
+    .confirm-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .confirm-table th,
+    .confirm-table td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    .confirm-table th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+      width: 30%;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+
+      .radio-group,
+      .checkbox-group {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+        margin-right: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>アンケート調査システム</h1>
+
+    <!-- ログイン画面 -->
+    <div id="login-section" class="section">
+      <h2>ログイン</h2>
+      <div class="form-group">
+        <label for="memberID">会員番号 <span class="required">*</span></label>
+        <input type="text" id="memberID" required>
+      </div>
+      <div class="form-group">
+        <label for="password">パスワード <span class="required">*</span></label>
+        <input type="password" id="password" required>
+      </div>
+      <button onclick="checkCredentials()">ログイン</button>
+      <div id="login-error" class="error"></div>
+    </div>
+
+    <!-- 会員情報編集画面 -->
+    <div id="member-section" class="section hidden">
+      <h2>会員情報</h2>
+      <div class="user-info">
+        <p><strong>ログイン中：</strong><span id="display-name"></span> さん</p>
+      </div>
+
+      <div class="form-group">
+        <label for="name">氏名 <span class="required">*</span></label>
+        <input type="text" id="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">メールアドレス <span class="required">*</span></label>
+        <input type="email" id="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="organization">所属</label>
+        <input type="text" id="organization">
+      </div>
+
+      <div class="form-group">
+        <label>性別</label>
+        <div class="radio-group">
+          <label><input type="radio" name="gender" value="男性"> 男性</label>
+          <label><input type="radio" name="gender" value="女性"> 女性</label>
+          <label><input type="radio" name="gender" value="その他"> その他</label>
+        </div>
+      </div>
+
+      <button onclick="proceedToSurvey()">アンケートに進む</button>
+    </div>
+
+    <!-- アンケート画面 -->
+    <div id="survey-section" class="section hidden">
+      <h2>アンケート</h2>
+      <div id="questions-container"></div>
+      <button onclick="showConfirm()">確認画面へ</button>
+      <button class="secondary" onclick="backToMember()">会員情報に戻る</button>
+      <div id="survey-error" class="error"></div>
+    </div>
+
+    <!-- 確認画面 -->
+    <div id="confirm-section" class="section hidden">
+      <h2>回答内容確認</h2>
+
+      <h3>会員情報</h3>
+      <table class="confirm-table">
+        <tr>
+          <th>氏名</th>
+          <td id="confirm-name"></td>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <td id="confirm-email"></td>
+        </tr>
+        <tr>
+          <th>所属</th>
+          <td id="confirm-organization"></td>
+        </tr>
+        <tr>
+          <th>性別</th>
+          <td id="confirm-gender"></td>
+        </tr>
+      </table>
+
+      <h3>アンケート回答</h3>
+      <div id="confirm-answers"></div>
+
+      <div style="margin-top: 30px;">
+        <button onclick="submitAll()">この内容で送信</button>
+        <button class="secondary" onclick="backToSurvey()">修正する</button>
+      </div>
+    </div>
+
+    <!-- 完了画面 -->
+    <div id="complete-section" class="section hidden">
+      <div class="success">
+        <h2>送信完了</h2>
+        <p>アンケートの回答が正常に送信されました。<br>ご協力ありがとうございました。</p>
+        <button onclick="startOver()">新しく回答する</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let cachedMemberID = "";
+    let questionsData = [];
+    let currentAnswers = {};
+
+    // ログイン処理
+    function checkCredentials() {
+      const memberID = document.getElementById('memberID').value;
+      const password = document.getElementById('password').value;
+
+      if (!memberID || !password) {
+        showError('login-error', '会員番号とパスワードを入力してください。');
+        return;
+      }
+
+      cachedMemberID = memberID;
+
+      google.script.run
+        .withSuccessHandler(function (response) {
+          if (response.success) {
+            // 会員情報を表示
+            document.getElementById('display-name').textContent = response.name;
+            document.getElementById('name').value = response.name || '';
+            document.getElementById('email').value = response.email || '';
+            document.getElementById('organization').value = response.organization || '';
+
+            // 性別の初期値を設定
+            if (response.gender) {
+              const radios = document.getElementsByName('gender');
+              for (let radio of radios) {
+                if (radio.value === response.gender) {
+                  radio.checked = true;
+                }
+              }
+            }
+
+            // 画面切り替え
+            hideAllSections();
+            document.getElementById('member-section').classList.remove('hidden');
+            clearError('login-error');
+          } else {
+            showError('login-error', response.message || '認証に失敗しました。');
+          }
+        })
+        .withFailureHandler(function (error) {
+          showError('login-error', 'システムエラーが発生しました。');
+          console.error(error);
+        })
+        .getUserData(memberID, password);
+    }
+
+    // アンケート画面に進む
+    function proceedToSurvey() {
+      // 設問データを取得してアンケート画面を表示
+      google.script.run
+        .withSuccessHandler(function (response) {
+          if (response.success) {
+            questionsData = response.questions;
+            renderQuestions();
+            loadExistingAnswers();
+            hideAllSections();
+            document.getElementById('survey-section').classList.remove('hidden');
+          } else {
+            showError('survey-error', response.message || '設問データの取得に失敗しました。');
+          }
+        })
+        .withFailureHandler(function (error) {
+          showError('survey-error', 'システムエラーが発生しました。');
+          console.error(error);
+        })
+        .getQuestionData();
+    }
+
+    // 既存の回答を読み込み
+    function loadExistingAnswers() {
+      google.script.run
+        .withSuccessHandler(function (response) {
+          if (response.success) {
+            currentAnswers = response.answers;
+            // フォームに既存の回答を反映
+            Object.keys(currentAnswers).forEach(questionId => {
+              setAnswerToForm(questionId, currentAnswers[questionId]);
+            });
+          }
+        })
+        .withFailureHandler(function (error) {
+          console.error('既存回答の取得に失敗:', error);
+        })
+        .getExistingAnswers(cachedMemberID);
+    }
+
+    // 設問をレンダリング
+    function renderQuestions() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      questionsData.forEach(question => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+        questionDiv.innerHTML = createQuestionHTML(question);
+        container.appendChild(questionDiv);
+      });
+    }
+
+    // 設問HTMLを生成
+    function createQuestionHTML(question) {
+      let html = `<div class="question-title">
+          ${question.title}
+          ${question.required ? '<span class="required">*</span>' : ''}
+        </div>`;
+
+      switch (question.type) {
+        case 'radio':
+          html += `<div class="radio-group">`;
+          question.options.forEach(option => {
+            html += `<label>
+                <input type="radio" name="q_${question.id}" value="${option}" 
+                       ${question.required ? 'required' : ''}>
+                ${option}
+              </label>`;
+          });
+          html += `</div>`;
+          break;
+
+        case 'checkbox':
+          html += `<div class="checkbox-group">`;
+          question.options.forEach(option => {
+            html += `<label>
+                <input type="checkbox" name="q_${question.id}" value="${option}">
+                ${option}
+              </label>`;
+          });
+          html += `</div>`;
+          break;
+
+        case 'text':
+          html += `<textarea name="q_${question.id}" placeholder="こちらにご記入ください..." 
+                     ${question.required ? 'required' : ''}></textarea>`;
+          break;
+      }
+
+      return html;
+    }
+
+    // フォームに既存の回答を設定
+    function setAnswerToForm(questionId, answer) {
+      const question = questionsData.find(q => q.id === questionId);
+      if (!question) return;
+
+      const elements = document.getElementsByName(`q_${questionId}`);
+
+      if (question.type === 'radio') {
+        elements.forEach(el => {
+          if (el.value === answer) {
+            el.checked = true;
+          }
+        });
+      } else if (question.type === 'checkbox') {
+        const answers = answer.split(',').map(a => a.trim());
+        elements.forEach(el => {
+          if (answers.includes(el.value)) {
+            el.checked = true;
+          }
+        });
+      } else if (question.type === 'text') {
+        if (elements[0]) {
+          elements[0].value = answer;
+        }
+      }
+    }
+    // 確認画面を表示
+    function showConfirm() {
+      // 必須項目のバリデーション
+      const requiredQuestions = questionsData.filter(q => q.required);
+      const missingAnswers = [];
+
+      requiredQuestions.forEach(question => {
+        const elements = document.getElementsByName(`q_${question.id}`);
+        let hasAnswer = false;
+
+        if (question.type === 'radio') {
+          hasAnswer = Array.from(elements).some(el => el.checked);
+        } else if (question.type === 'checkbox') {
+          hasAnswer = Array.from(elements).some(el => el.checked);
+        } else if (question.type === 'text') {
+          hasAnswer = elements[0] && elements[0].value.trim() !== '';
+        }
+
+        if (!hasAnswer) {
+          missingAnswers.push(question.title);
+        }
+      });
+
+      if (missingAnswers.length > 0) {
+        showError('survey-error', `次の必須項目に回答してください：\n${missingAnswers.join('\n')}`);
+        return;
+      }
+
+      // 回答を収集
+      collectAnswers();
+
+      // 確認画面に表示
+      document.getElementById('confirm-name').textContent = document.getElementById('name').value;
+      document.getElementById('confirm-email').textContent = document.getElementById('email').value;
+      document.getElementById('confirm-organization').textContent = document.getElementById('organization').value;
+      document.getElementById('confirm-gender').textContent =
+        document.querySelector('input[name="gender"]:checked')?.value || '';
+
+      renderConfirmAnswers();
+
+      hideAllSections();
+      document.getElementById('confirm-section').classList.remove('hidden');
+      clearError('survey-error');
+    }
+
+    // 回答を収集
+    function collectAnswers() {
+      currentAnswers = {};
+
+      questionsData.forEach(question => {
+        const elements = document.getElementsByName(`q_${question.id}`);
+
+        if (question.type === 'radio') {
+          const checked = Array.from(elements).find(el => el.checked);
+          if (checked) {
+            currentAnswers[question.id] = checked.value;
+          }
+        } else if (question.type === 'checkbox') {
+          const checkedValues = Array.from(elements)
+            .filter(el => el.checked)
+            .map(el => el.value);
+          if (checkedValues.length > 0) {
+            currentAnswers[question.id] = checkedValues.join(', ');
+          }
+        } else if (question.type === 'text') {
+          if (elements[0] && elements[0].value.trim()) {
+            currentAnswers[question.id] = elements[0].value.trim();
+          }
+        }
+      });
+    }
+
+    // 確認画面に回答を表示
+    function renderConfirmAnswers() {
+      const container = document.getElementById('confirm-answers');
+      container.innerHTML = '';
+
+      const table = document.createElement('table');
+      table.className = 'confirm-table';
+
+      questionsData.forEach(question => {
+        if (currentAnswers[question.id]) {
+          const row = table.insertRow();
+          const titleCell = row.insertCell(0);
+          const answerCell = row.insertCell(1);
+
+          titleCell.innerHTML = `<strong>${question.title}</strong>`;
+          answerCell.textContent = currentAnswers[question.id];
+        }
+      });
+
+      container.appendChild(table);
+    }
+
+    // 全データを送信
+    function submitAll() {
+      // 会員データを更新
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const organization = document.getElementById('organization').value;
+      const gender = document.querySelector('input[name="gender"]:checked')?.value || '';
+
+      Promise.all([
+        new Promise((resolve, reject) => {
+          google.script.run
+            .withSuccessHandler(resolve)
+            .withFailureHandler(reject)
+            .updateMemberData(cachedMemberID, name, email, organization, gender);
+        }),
+        new Promise((resolve, reject) => {
+          google.script.run
+            .withSuccessHandler(resolve)
+            .withFailureHandler(reject)
+            .submitAnswers(cachedMemberID, currentAnswers);
+        })
+      ])
+        .then(results => {
+          if (results.every(r => r.success)) {
+            hideAllSections();
+            document.getElementById('complete-section').classList.remove('hidden');
+          } else {
+            alert('送信中にエラーが発生しました。もう一度お試しください。');
+          }
+        })
+        .catch(error => {
+          console.error('送信エラー:', error);
+          alert('送信中にエラーが発生しました。もう一度お試しください。');
+        });
+    }
+
+    // ナビゲーション関数
+    function backToMember() {
+      hideAllSections();
+      document.getElementById('member-section').classList.remove('hidden');
+    }
+
+    function backToSurvey() {
+      hideAllSections();
+      document.getElementById('survey-section').classList.remove('hidden');
+    }
+
+    function startOver() {
+      hideAllSections();
+      document.getElementById('login-section').classList.remove('hidden');
+      // フォームをリセット
+      document.getElementById('memberID').value = '';
+      document.getElementById('password').value = '';
+      cachedMemberID = '';
+      questionsData = [];
+      currentAnswers = {};
+    }
+
+    // ユーティリティ関数
+    function hideAllSections() {
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.add('hidden');
+      });
+    }
+
+    function showError(elementId, message) {
+      const errorElement = document.getElementById(elementId);
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+    }
+
+    function clearError(elementId) {
+      const errorElement = document.getElementById(elementId);
+      errorElement.textContent = '';
+      errorElement.style.display = 'none';
+    }
+  </script>
+</body>
+
+</html>
