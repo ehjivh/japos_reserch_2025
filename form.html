@@ -271,8 +271,10 @@
       <h2>アンケート</h2>
       <div id="questions-container"></div>
       <button onclick="showConfirm()">確認画面へ</button>
+      <button onclick="savePartialAnswers()" class="secondary">部分保存</button>
       <button class="secondary" onclick="backToMember()">会員情報に戻る</button>
       <div id="survey-error" class="error"></div>
+      <div id="survey-success" class="success" style="display: none;"></div>
     </div>
 
     <!-- 確認画面 -->
@@ -397,6 +399,12 @@
         .withSuccessHandler(function (response) {
           if (response.success) {
             currentAnswers = response.answers;
+
+            // 既存回答がある場合の通知表示
+            if (response.hasExistingData) {
+              showExistingDataNotification();
+            }
+
             // フォームに既存の回答を反映
             Object.keys(currentAnswers).forEach(questionId => {
               setAnswerToForm(questionId, currentAnswers[questionId]);
@@ -407,6 +415,21 @@
           console.error('既存回答の取得に失敗:', error);
         })
         .getExistingAnswers(cachedMemberID);
+    }
+
+    // 既存データがある場合の通知を表示
+    function showExistingDataNotification() {
+      const container = document.getElementById('questions-container');
+      const notification = document.createElement('div');
+      notification.className = 'existing-data-notification';
+      notification.innerHTML = `
+        <div style="background-color: #e3f2fd; padding: 15px; border-radius: 4px; margin-bottom: 20px; border-left: 4px solid #2196F3;">
+          <strong>📋 既存の回答データが見つかりました</strong><br>
+          前回の回答内容が自動的に読み込まれています。<br>
+          必要に応じて修正してください。
+        </div>
+      `;
+      container.insertBefore(notification, container.firstChild);
     }
 
     // 設問をレンダリング
@@ -420,6 +443,11 @@
         questionDiv.innerHTML = createQuestionHTML(question);
         container.appendChild(questionDiv);
       });
+
+      // 既存回答がある場合は通知を先頭に追加
+      if (Object.keys(currentAnswers).length > 0) {
+        showExistingDataNotification();
+      }
     }
 
     // 設問HTMLを生成
@@ -616,6 +644,44 @@
           console.error('送信エラー:', error);
           alert('送信中にエラーが発生しました。もう一度お試しください。');
         });
+    }
+
+    // 部分保存機能
+    function savePartialAnswers() {
+      // 現在の回答を収集
+      collectAnswers();
+
+      if (Object.keys(currentAnswers).length === 0) {
+        showError('survey-error', '保存する回答がありません。');
+        return;
+      }
+
+      google.script.run
+        .withSuccessHandler(function (response) {
+          if (response.success) {
+            showSuccess('survey-success', '回答を部分保存しました。後で続きから回答できます。');
+            clearError('survey-error');
+          } else {
+            showError('survey-error', response.message || '部分保存に失敗しました。');
+          }
+        })
+        .withFailureHandler(function (error) {
+          showError('survey-error', '部分保存中にエラーが発生しました。');
+          console.error(error);
+        })
+        .updatePartialAnswers(cachedMemberID, currentAnswers);
+    }
+
+    // 成功メッセージを表示
+    function showSuccess(elementId, message) {
+      const successElement = document.getElementById(elementId);
+      successElement.textContent = message;
+      successElement.style.display = 'block';
+
+      // 3秒後に自動で非表示
+      setTimeout(() => {
+        successElement.style.display = 'none';
+      }, 3000);
     }
 
     // ナビゲーション関数
