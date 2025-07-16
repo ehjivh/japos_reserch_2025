@@ -80,7 +80,8 @@ function getQuestionData() {
           options: data[i][3] ? data[i][3].split(',').map(opt => opt.trim()) : [],
           required: data[i][4] === true || data[i][4] === 'true',
           order: data[i][5] || 999,
-          visible: isVisible
+          visible: isVisible,
+          description: data[i][7] || '' // H列に説明文を追加
         });
       }
     }

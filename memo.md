@@ -61,3 +61,31 @@ GoogleスプレッドシートとGoogleAppScriptを用いてアンケート調�
 - `showExistingDataNotification()`: 既存データ通知表示
 - `savePartialAnswers()`: フロントエンド部分保存機能
 - `showSuccess()`: 成功メッセージ表示機能
+
+### 2025年7月16日 - 設問説明文と「その他」自由記述機能の追加
+**追加機能**:
+1. **設問説明文機能**
+   - スプレッドシートのH列に設問の説明文・回答例を記載可能
+   - 青い背景のボックスで設問タイトル下に表示
+   - 空白の場合は表示されない
+
+2. **「その他」自由記述機能**
+   - 選択肢に「その他」を含めると自動的に自由記述欄を追加
+   - ラジオボタン・チェックボックス両方に対応
+   - 「その他」選択時のみ入力欄が表示される
+   - 回答データは「その他:具体的な内容」形式で保存
+
+**技術実装**:
+- `Code.gs`の`getQuestionData()`関数で説明文（H列）を取得
+- CSS追加：`.question-description`、`.other-input`スタイル
+- JavaScript追加：
+  - `handleRadioChange()`: ラジオボタン変更処理
+  - `handleCheckboxChange()`: チェックボックス変更処理  
+  - `handleOtherInput()`: その他入力欄変更処理
+- `createQuestionHTML()`関数の拡張
+- `setAnswerToForm()`関数で既存回答の「その他」内容復元
+- `collectAnswers()`関数で「その他」自由記述の収集
+
+**データ構造変更**:
+- 設問管理シート：H列に「説明文」追加
+- 回答データ：「その他:具体的内容」形式で保存

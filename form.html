@@ -5,7 +5,7 @@
   <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>アンケート調査システム</title>
+  <title>日本公開天文台協会 2025年公開天文台調査</title>
   <style>
     body {
       font-family: 'Hiragino Sans', 'ヒラギノ角ゴシック', 'Yu Gothic', 'メイリオ', sans-serif;
@@ -171,6 +171,33 @@
       margin-bottom: 10px;
     }
 
+    .question-description {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 15px;
+      line-height: 1.5;
+      background-color: #f0f7ff;
+      padding: 10px;
+      border-radius: 4px;
+      border-left: 3px solid #2196F3;
+    }
+
+    .other-input {
+      width: 100%;
+      margin-top: 10px;
+      padding: 8px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+      display: none;
+    }
+
+    .other-input:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+
     .required {
       color: #f44336;
       font-size: 12px;
@@ -215,7 +242,7 @@
 
 <body>
   <div class="container">
-    <h1>アンケート調査システム</h1>
+    <h1>日本公開天文台協会 2025年公開天文台調査</h1>
 
     <!-- ログイン画面 -->
     <div id="login-section" class="section">
@@ -234,7 +261,7 @@
 
     <!-- 会員情報編集画面 -->
     <div id="member-section" class="section hidden">
-      <h2>会員情報</h2>
+      <h2>回答者の情報</h2>
       <div class="user-info">
         <p><strong>ログイン中：</strong><span id="display-name"></span> さん</p>
       </div>
@@ -252,15 +279,6 @@
       <div class="form-group">
         <label for="organization">所属</label>
         <input type="text" id="organization">
-      </div>
-
-      <div class="form-group">
-        <label>性別</label>
-        <div class="radio-group">
-          <label><input type="radio" name="gender" value="男性"> 男性</label>
-          <label><input type="radio" name="gender" value="女性"> 女性</label>
-          <label><input type="radio" name="gender" value="その他"> その他</label>
-        </div>
       </div>
 
       <button onclick="proceedToSurvey()">アンケートに進む</button>
@@ -457,28 +475,49 @@
           ${question.required ? '<span class="required">*</span>' : ''}
         </div>`;
 
+      // 説明文がある場合は表示
+      if (question.description && question.description.trim() !== '') {
+        html += `<div class="question-description">${question.description}</div>`;
+      }
+
       switch (question.type) {
         case 'radio':
           html += `<div class="radio-group">`;
           question.options.forEach(option => {
             html += `<label>
                 <input type="radio" name="q_${question.id}" value="${option}" 
-                       ${question.required ? 'required' : ''}>
+                       ${question.required ? 'required' : ''}
+                       onchange="handleRadioChange('${question.id}', '${option}')">
                 ${option}
               </label>`;
           });
           html += `</div>`;
+
+          // 「その他」の自由記述欄を追加
+          if (question.options.some(opt => opt.includes('その他'))) {
+            html += `<input type="text" class="other-input" id="other_${question.id}" 
+                     placeholder="その他の場合は具体的にご記入ください..." 
+                     onchange="handleOtherInput('${question.id}')">`;
+          }
           break;
 
         case 'checkbox':
           html += `<div class="checkbox-group">`;
           question.options.forEach(option => {
             html += `<label>
-                <input type="checkbox" name="q_${question.id}" value="${option}">
+                <input type="checkbox" name="q_${question.id}" value="${option}"
+                       onchange="handleCheckboxChange('${question.id}', '${option}')">
                 ${option}
               </label>`;
           });
           html += `</div>`;
+
+          // 「その他」の自由記述欄を追加
+          if (question.options.some(opt => opt.includes('その他'))) {
+            html += `<input type="text" class="other-input" id="other_${question.id}" 
+                     placeholder="その他の場合は具体的にご記入ください..." 
+                     onchange="handleOtherInput('${question.id}')">`;
+          }
           break;
 
         case 'text':
@@ -501,18 +540,106 @@
         elements.forEach(el => {
           if (el.value === answer) {
             el.checked = true;
+            // 「その他」の場合は入力欄を表示
+            if (answer.includes('その他') && answer !== 'その他') {
+              const otherInput = document.getElementById(`other_${questionId}`);
+              if (otherInput) {
+                otherInput.style.display = 'block';
+                otherInput.value = answer.replace('その他:', '').trim();
+              }
+            }
           }
         });
       } else if (question.type === 'checkbox') {
         const answers = answer.split(',').map(a => a.trim());
         elements.forEach(el => {
-          if (answers.includes(el.value)) {
+          if (answers.some(ans => ans === el.value || (ans.includes('その他') && el.value.includes('その他')))) {
             el.checked = true;
           }
         });
+
+        // 「その他」の回答がある場合は入力欄を表示
+        const otherAnswer = answers.find(ans => ans.includes('その他') && ans !== 'その他');
+        if (otherAnswer) {
+          const otherInput = document.getElementById(`other_${questionId}`);
+          if (otherInput) {
+            otherInput.style.display = 'block';
+            otherInput.value = otherAnswer.replace('その他:', '').trim();
+          }
+        }
       } else if (question.type === 'text') {
         if (elements[0]) {
           elements[0].value = answer;
+        }
+      }
+    }
+
+    // ラジオボタンの変更処理
+    function handleRadioChange(questionId, selectedValue) {
+      const otherInput = document.getElementById(`other_${questionId}`);
+      if (otherInput) {
+        if (selectedValue.includes('その他')) {
+          otherInput.style.display = 'block';
+          otherInput.focus();
+        } else {
+          otherInput.style.display = 'none';
+          otherInput.value = '';
+        }
+      }
+    }
+
+    // チェックボックスの変更処理
+    function handleCheckboxChange(questionId, selectedValue) {
+      const otherInput = document.getElementById(`other_${questionId}`);
+      if (otherInput && selectedValue.includes('その他')) {
+        const checkbox = event.target;
+        if (checkbox.checked) {
+          otherInput.style.display = 'block';
+          otherInput.focus();
+        } else {
+          // 他の「その他」がチェックされていない場合のみ非表示
+          const checkboxes = document.getElementsByName(`q_${questionId}`);
+          const hasOtherChecked = Array.from(checkboxes).some(cb =>
+            cb.checked && cb.value.includes('その他')
+          );
+          if (!hasOtherChecked) {
+            otherInput.style.display = 'none';
+            otherInput.value = '';
+          }
+        }
+      }
+    }
+
+    // 「その他」入力欄の変更処理
+    function handleOtherInput(questionId) {
+      const otherInput = document.getElementById(`other_${questionId}`);
+      const question = questionsData.find(q => q.id === questionId);
+
+      if (otherInput && question) {
+        const elements = document.getElementsByName(`q_${questionId}`);
+
+        if (question.type === 'radio') {
+          // ラジオボタンの場合：「その他」のvalueを更新
+          elements.forEach(el => {
+            if (el.value.includes('その他') && el.checked) {
+              if (otherInput.value.trim()) {
+                el.value = `その他:${otherInput.value.trim()}`;
+              } else {
+                el.value = 'その他';
+              }
+            }
+          });
+        } else if (question.type === 'checkbox') {
+          // チェックボックスの場合：「その他」のvalueを更新
+          elements.forEach(el => {
+            if (el.value.includes('その他') && el.checked) {
+              if (otherInput.value.trim()) {
+                el.value = `その他:${otherInput.value.trim()}`;
+              } else {
+                el.value = 'その他';
+              }
+            }
+          });
         }
       }
     }
@@ -571,12 +698,34 @@
         if (question.type === 'radio') {
           const checked = Array.from(elements).find(el => el.checked);
           if (checked) {
-            currentAnswers[question.id] = checked.value;
+            let value = checked.value;
+
+            // 「その他」が選択されている場合は自由記述の内容を取得
+            if (value.includes('その他')) {
+              const otherInput = document.getElementById(`other_${question.id}`);
+              if (otherInput && otherInput.value.trim()) {
+                value = `その他:${otherInput.value.trim()}`;
+              }
+            }
+
+            currentAnswers[question.id] = value;
           }
         } else if (question.type === 'checkbox') {
           const checkedValues = Array.from(elements)
             .filter(el => el.checked)
-            .map(el => el.value);
+            .map(el => {
+              let value = el.value;
+
+              // 「その他」が選択されている場合は自由記述の内容を取得
+              if (value.includes('その他')) {
+                const otherInput = document.getElementById(`other_${question.id}`);
+                if (otherInput && otherInput.value.trim()) {
+                  value = `その他:${otherInput.value.trim()}`;
+                }
+              }
+
+              return value;
+            });
           if (checkedValues.length > 0) {
             currentAnswers[question.id] = checkedValues.join(', ');
           }
