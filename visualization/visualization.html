@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>アンケート回答データ可視化システム</title>
+
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+	<style>
+		body {
+			background-color: #f8f9fa;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+
+		.header {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			padding: 20px 0;
+			margin-bottom: 30px;
+		}
+
+		.stat-card {
+			background: white;
+			border-radius: 10px;
+			padding: 20px;
+			margin-bottom: 20px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+			transition: transform 0.2s;
+		}
+
+		.stat-card:hover {
+			transform: translateY(-2px);
+		}
+
+		.stat-number {
+			font-size: 2.5rem;
+			font-weight: bold;
+			color: #667eea;
+		}
+
+		.stat-label {
+			color: #6c757d;
+			font-size: 0.9rem;
+		}
+
+		.chart-container {
+			background: white;
+			border-radius: 10px;
+			padding: 20px;
+			margin-bottom: 30px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.chart-title {
+			font-size: 1.2rem;
+			font-weight: bold;
+			margin-bottom: 15px;
+			color: #495057;
+			border-bottom: 2px solid #667eea;
+			padding-bottom: 10px;
+		}
+
+		.question-nav {
+			background: white;
+			border-radius: 10px;
+			padding: 20px;
+			margin-bottom: 20px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.question-btn {
+			margin: 5px;
+			border-radius: 20px;
+		}
+
+		.loading {
+			text-align: center;
+			padding: 50px;
+		}
+
+		.spinner-border {
+			color: #667eea;
+		}
+
+		.text-responses {
+			max-height: 400px;
+			overflow-y: auto;
+		}
+
+		.response-item {
+			background: #f8f9fa;
+			border-left: 4px solid #667eea;
+			padding: 10px;
+			margin-bottom: 10px;
+			border-radius: 5px;
+		}
+
+		.word-cloud-container {
+			background: linear-gradient(45deg, #f8f9fa, #ffffff);
+			border-radius: 10px;
+			padding: 20px;
+			text-align: center;
+			min-height: 200px;
+		}
+
+		.word-cloud-word {
+			display: inline-block;
+			margin: 5px;
+			padding: 5px 10px;
+			border-radius: 15px;
+			color: white;
+			font-weight: bold;
+			cursor: pointer;
+			transition: transform 0.2s;
+		}
+
+		.word-cloud-word:hover {
+			transform: scale(1.1);
+		}
+
+		.error-alert {
+			background-color: #f8d7da;
+			border-color: #f5c6cb;
+			color: #721c24;
+		}
+
+		.export-btn {
+			margin: 5px;
+		}
+
+		.chart-type-toggle {
+			margin-bottom: 15px;
+		}
+
+		.type-badge {
+			font-size: 0.8rem;
+			padding: 4px 8px;
+			border-radius: 12px;
+		}
+
+		.type-radio {
+			background-color: #198754;
+		}
+
+		.type-checkbox {
+			background-color: #0d6efd;
+		}
+
+		.type-text {
+			background-color: #fd7e14;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- ヘッダー -->
+	<div class="header">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-md-8">
+					<h1><i class="fas fa-chart-line me-3"></i>アンケート回答データ可視化システム</h1>
+					<p class="mb-0">収集された回答データをグラフで分析・可視化します</p>
+				</div>
+				<div class="col-md-4 text-end">
+					<button id="refreshBtn" class="btn btn-light">
+						<i class="fas fa-sync-alt me-2"></i>データ更新
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<!-- ダッシュボード統計 -->
+		<div id="dashboardStats" class="row">
+			<!-- 統計カードはJavaScriptで動的に生成 -->
+		</div>
+
+		<!-- 設問選択ナビゲーション -->
+		<div class="question-nav">
+			<h5><i class="fas fa-list me-2"></i>設問選択</h5>
+			<div id="questionButtons" class="mt-3">
+				<!-- 設問ボタンはJavaScriptで動的に生成 -->
+			</div>
+		</div>
+
+		<!-- ローディング表示 -->
+		<div id="loading" class="loading">
+			<div class="spinner-border" role="status">
+				<span class="visually-hidden">読み込み中...</span>
+			</div>
+			<p class="mt-3">データを読み込んでいます...</p>
+		</div>
+
+		<!-- エラー表示 -->
+		<div id="errorAlert" class="alert error-alert d-none" role="alert">
+			<h4 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>エラーが発生しました</h4>
+			<p id="errorMessage"></p>
+		</div>
+
+		<!-- グラフ表示エリア -->
+		<div id="chartArea" class="d-none">
+			<!-- 個別設問表示 -->
+			<div id="singleQuestionView" class="d-none">
+				<div class="chart-container">
+					<div class="d-flex justify-content-between align-items-center mb-3">
+						<h3 id="questionTitle" class="chart-title mb-0"></h3>
+						<div>
+							<button id="chartTypeToggle" class="btn btn-outline-primary btn-sm chart-type-toggle d-none">
+								<i class="fas fa-exchange-alt me-1"></i>グラフ切替
+							</button>
+							<button id="exportChart" class="btn btn-outline-success btn-sm export-btn">
+								<i class="fas fa-download me-1"></i>画像保存
+							</button>
+						</div>
+					</div>
+
+					<div id="chartTypeIndicator" class="mb-3"></div>
+
+					<!-- ラジオ・チェックボックス用グラフ -->
+					<div id="chartCanvasContainer" class="d-none">
+						<canvas id="mainChart" width="400" height="200"></canvas>
+					</div>
+
+					<!-- テキスト設問用表示 -->
+					<div id="textDataContainer" class="d-none">
+						<!-- ワードクラウド -->
+						<div class="row mb-4">
+							<div class="col-12">
+								<h5><i class="fas fa-cloud me-2"></i>よく使われるキーワード</h5>
+								<div id="wordCloudContainer" class="word-cloud-container"></div>
+							</div>
+						</div>
+
+						<!-- 文字数分布 -->
+						<div class="row mb-4">
+							<div class="col-12">
+								<h5><i class="fas fa-chart-bar me-2"></i>回答文字数分布</h5>
+								<canvas id="lengthDistChart" width="400" height="200"></canvas>
+							</div>
+						</div>
+
+						<!-- 回答一覧 -->
+						<div class="row">
+							<div class="col-12">
+								<h5><i class="fas fa-list-ul me-2"></i>回答一覧</h5>
+								<div class="mb-3">
+									<input type="text" id="responseSearch" class="form-control" placeholder="キーワードで検索...">
+								</div>
+								<div id="responsesList" class="text-responses"></div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 統計情報 -->
+					<div id="questionStats" class="mt-4">
+						<!-- 統計情報はJavaScriptで動的に生成 -->
+					</div>
+				</div>
+			</div>
+
+			<!-- 全設問概要表示 -->
+			<div id="allQuestionsView">
+				<div class="d-flex justify-content-between align-items-center mb-4">
+					<h3><i class="fas fa-chart-pie me-2"></i>全設問データ概要</h3>
+					<button id="exportAllData" class="btn btn-success">
+						<i class="fas fa-file-csv me-2"></i>データをCSV出力
+					</button>
+				</div>
+				<div id="allChartsContainer">
+					<!-- 全設問のグラフはJavaScriptで動的に生成 -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Bootstrap JS -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Chart.js -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+	<script>
+		// グローバル変数
+		let currentQuestions = [];
+		let currentStats = {};
+		let currentChart = null;
+		let currentChartType = 'pie'; // pie, bar
+
+		// 初期化
+		document.addEventListener('DOMContentLoaded', function () {
+			loadDashboard();
+
+			// イベントリスナー設定
+			document.getElementById('refreshBtn').addEventListener('click', refreshData);
+			document.getElementById('chartTypeToggle').addEventListener('click', toggleChartType);
+			document.getElementById('exportChart').addEventListener('click', exportChart);
+			document.getElementById('exportAllData').addEventListener('click', exportAllData);
+			document.getElementById('responseSearch').addEventListener('input', filterResponses);
+		});
+
+		// ダッシュボードを読み込み
+		function loadDashboard() {
+			showLoading();
+
+			Promise.all([
+				callGASFunction('getVisibleQuestions'),
+				callGASFunction('getDashboardStats')
+			]).then(([questionsResult, statsResult]) => {
+				if (questionsResult.success && statsResult.success) {
+					currentQuestions = questionsResult.questions;
+					currentStats = statsResult.stats;
+
+					displayDashboardStats(currentStats);
+					displayQuestionButtons(currentQuestions);
+					loadAllQuestionsView();
+				} else {
+					showError(questionsResult.message || statsResult.message);
+				}
+			}).catch(error => {
+				showError('データの読み込みに失敗しました: ' + error.message);
+			});
+		}
+
+		// Google Apps Script関数を呼び出す
+		function callGASFunction(functionName, ...args) {
+			return new Promise((resolve, reject) => {
+				google.script.run
+					.withSuccessHandler(resolve)
+					.withFailureHandler(reject)
+				[functionName](...args);
+			});
+		}
+
+		// ダッシュボード統計を表示
+		function displayDashboardStats(stats) {
+			const container = document.getElementById('dashboardStats');
+			container.innerHTML = `
+        <div class="col-md-3">
+          <div class="stat-card text-center">
+            <div class="stat-number">${stats.totalMembers}</div>
+            <div class="stat-label">総会員数</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card text-center">
+            <div class="stat-number">${stats.responseCount}</div>
+            <div class="stat-label">回答者数</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card text-center">
+            <div class="stat-number">${stats.responseRate}%</div>
+            <div class="stat-label">回答率</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="stat-card text-center">
+            <div class="stat-number">${stats.totalQuestions}</div>
+            <div class="stat-label">設問数</div>
+          </div>
+        </div>
+      `;
+		}
+
+		// 設問ボタンを表示
+		function displayQuestionButtons(questions) {
+			const container = document.getElementById('questionButtons');
+			let buttonsHTML = `
+        <button class="btn btn-primary question-btn" onclick="showAllQuestions()">
+          <i class="fas fa-chart-pie me-1"></i>全設問概要
+        </button>
+      `;
+
+			questions.forEach(question => {
+				const typeClass = `type-${question.type}`;
+				const typeIcon = getTypeIcon(question.type);
+
+				buttonsHTML += `
+          <button class="btn btn-outline-secondary question-btn" 
+                  onclick="showQuestion('${question.id}')">
+            ${typeIcon} ${question.id}: ${question.title}
+            <span class="badge ${typeClass} ms-2">${question.type}</span>
+          </button>
+        `;
+			});
+
+			container.innerHTML = buttonsHTML;
+		}
+
+		// 設問タイプのアイコンを取得
+		function getTypeIcon(type) {
+			switch (type) {
+				case 'radio': return '<i class="fas fa-dot-circle"></i>';
+				case 'checkbox': return '<i class="fas fa-check-square"></i>';
+				case 'text': return '<i class="fas fa-edit"></i>';
+				default: return '<i class="fas fa-question"></i>';
+			}
+		}
+
+		// 全設問概要を表示
+		function showAllQuestions() {
+			showLoading();
+
+			callGASFunction('getAllQuestionsData')
+				.then(result => {
+					if (result.success) {
+						displayAllQuestions(result.questionsData);
+						showChartArea();
+						document.getElementById('singleQuestionView').classList.add('d-none');
+						document.getElementById('allQuestionsView').classList.remove('d-none');
+					} else {
+						showError(result.message);
+					}
+				})
+				.catch(error => {
+					showError('データの取得に失敗しました: ' + error.message);
+				});
+		}
+
+		// 全設問のグラフを表示
+		function displayAllQuestions(questionsData) {
+			const container = document.getElementById('allChartsContainer');
+			container.innerHTML = '';
+
+			questionsData.forEach((item, index) => {
+				const question = item.question;
+				const chartData = item.chartData;
+
+				if (!chartData) return;
+
+				const chartHTML = `
+          <div class="chart-container mb-4">
+            <h5 class="chart-title">
+              ${getTypeIcon(question.type)} ${question.id}: ${question.title}
+              <span class="badge type-${question.type} ms-2">${question.type}</span>
+            </h5>
+            ${question.description ? `<p class="text-muted mb-3">${question.description}</p>` : ''}
+            <div class="row">
+              <div class="col-md-8">
+                ${question.type === 'text' ?
+						generateTextSummaryHTML(chartData) :
+						`<canvas id="chart${index}" width="400" height="200"></canvas>`
+					}
+              </div>
+              <div class="col-md-4">
+                ${generateQuestionStatsHTML(chartData)}
+              </div>
+            </div>
+          </div>
+        `;
+
+				container.innerHTML += chartHTML;
+
+				// チャートを描画（テキスト設問以外）
+				if (question.type !== 'text') {
+					setTimeout(() => {
+						createChart(`chart${index}`, chartData, question.type);
+					}, 100);
+				}
+			});
+
+			hideLoading();
+		}
+
+		// テキストデータのサマリーHTML生成
+		function generateTextSummaryHTML(textData) {
+			const topWords = textData.wordCloud.slice(0, 10);
+			const wordCloudHTML = topWords.map(([word, freq]) =>
+				`<span class="word-cloud-word" style="background-color: ${getRandomColor()}; font-size: ${Math.max(12, Math.min(24, freq * 2))}px;">
+          ${word} (${freq})
+         </span>`
+			).join('');
+
+			return `
+        <div class="word-cloud-container">
+          <h6><i class="fas fa-cloud me-2"></i>主要キーワード</h6>
+          ${wordCloudHTML || '<p class="text-muted">キーワードが見つかりませんでした</p>'}
+        </div>
+      `;
+		}
+
+		// 設問統計HTML生成
+		function generateQuestionStatsHTML(chartData) {
+			if (chartData.type === 'text') {
+				return `
+          <div class="card">
+            <div class="card-body">
+              <h6 class="card-title"><i class="fas fa-chart-bar me-2"></i>統計情報</h6>
+              <p class="mb-1"><strong>回答数:</strong> ${chartData.totalResponses}</p>
+              <p class="mb-1"><strong>ユニークワード数:</strong> ${chartData.wordCloud.length}</p>
+              <p class="mb-0"><strong>平均文字数:</strong> ${calculateAverageLength(chartData.responses)}文字</p>
+            </div>
+          </div>
+        `;
+			} else {
+				const total = chartData.total || chartData.totalResponses;
+				return `
+          <div class="card">
+            <div class="card-body">
+              <h6 class="card-title"><i class="fas fa-chart-bar me-2"></i>統計情報</h6>
+              <p class="mb-1"><strong>回答数:</strong> ${total}</p>
+              <p class="mb-1"><strong>選択肢数:</strong> ${chartData.labels.length}</p>
+              ${chartData.type === 'radio' ?
+						`<p class="mb-0"><strong>最多選択:</strong> ${getMostSelected(chartData)}</p>` :
+						`<p class="mb-0"><strong>総選択数:</strong> ${chartData.datasets[0].data.reduce((a, b) => a + b, 0)}</p>`
+					}
+            </div>
+          </div>
+        `;
+			}
+		}
+
+		// 特定の設問を表示
+		function showQuestion(questionId) {
+			showLoading();
+
+			const question = currentQuestions.find(q => q.id === questionId);
+			if (!question) {
+				showError('設問が見つかりません');
+				return;
+			}
+
+			callGASFunction('getQuestionChartData', questionId)
+				.then(result => {
+					if (result.success) {
+						displaySingleQuestion(question, result.chartData || result.textData);
+						showChartArea();
+						document.getElementById('allQuestionsView').classList.add('d-none');
+						document.getElementById('singleQuestionView').classList.remove('d-none');
+					} else {
+						showError(result.message);
+					}
+				})
+				.catch(error => {
+					showError('データの取得に失敗しました: ' + error.message);
+				});
+		}
+
+		// 単一設問を表示
+		function displaySingleQuestion(question, data) {
+			document.getElementById('questionTitle').textContent =
+				`${question.id}: ${question.title}`;
+
+			// タイプインジケーター
+			const typeIndicator = document.getElementById('chartTypeIndicator');
+			typeIndicator.innerHTML = `
+        <div class="d-flex align-items-center">
+          <span class="badge type-${question.type} me-2">${question.type}</span>
+          ${question.description ? `<span class="text-muted">${question.description}</span>` : ''}
+        </div>
+      `;
+
+			if (question.type === 'text') {
+				displayTextData(data);
+			} else {
+				displayChartData(data, question.type);
+			}
+
+			hideLoading();
+		}
+
+		// チャートデータを表示
+		function displayChartData(data, questionType) {
+			document.getElementById('chartCanvasContainer').classList.remove('d-none');
+			document.getElementById('textDataContainer').classList.add('d-none');
+
+			// グラフ切替ボタンの表示（ラジオボタンのみ）
+			const toggleBtn = document.getElementById('chartTypeToggle');
+			if (questionType === 'radio') {
+				toggleBtn.classList.remove('d-none');
+			} else {
+				toggleBtn.classList.add('d-none');
+			}
+
+			createChart('mainChart', data, questionType);
+
+			// 統計情報を表示
+			displayQuestionStatistics(data);
+		}
+
+		// テキストデータを表示
+		function displayTextData(data) {
+			document.getElementById('chartCanvasContainer').classList.add('d-none');
+			document.getElementById('textDataContainer').classList.remove('d-none');
+			document.getElementById('chartTypeToggle').classList.add('d-none');
+
+			// ワードクラウド
+			displayWordCloud(data.wordCloud);
+
+			// 文字数分布グラフ
+			createLengthDistributionChart(data.lengthDistribution);
+
+			// 回答一覧
+			displayResponses(data.responses);
+
+			// 統計情報
+			displayTextStatistics(data);
+		}
+
+		// ワードクラウドを表示
+		function displayWordCloud(wordData) {
+			const container = document.getElementById('wordCloudContainer');
+
+			if (!wordData || wordData.length === 0) {
+				container.innerHTML = '<p class="text-muted">キーワードが見つかりませんでした</p>';
+				return;
+			}
+
+			const maxFreq = Math.max(...wordData.map(([word, freq]) => freq));
+
+			const wordCloudHTML = wordData.map(([word, freq]) => {
+				const size = Math.max(12, Math.min(36, (freq / maxFreq) * 30 + 12));
+				return `
+          <span class="word-cloud-word" 
+                style="background-color: ${getRandomColor()}; font-size: ${size}px;"
+                title="${word}: ${freq}回">
+            ${word}
+          </span>
+        `;
+			}).join('');
+
+			container.innerHTML = wordCloudHTML;
+		}
+
+		// Chart.jsでグラフを作成
+		function createChart(canvasId, data, questionType) {
+			const ctx = document.getElementById(canvasId).getContext('2d');
+
+			// 既存のチャートを破棄
+			if (currentChart && canvasId === 'mainChart') {
+				currentChart.destroy();
+			}
+
+			let chartConfig;
+
+			if (questionType === 'radio') {
+				chartConfig = createRadioChartConfig(data);
+			} else if (questionType === 'checkbox') {
+				chartConfig = createCheckboxChartConfig(data);
+			}
+
+			const chart = new Chart(ctx, chartConfig);
+
+			if (canvasId === 'mainChart') {
+				currentChart = chart;
+			}
+
+			return chart;
+		}
+
+		// ラジオボタン用チャート設定
+		function createRadioChartConfig(data) {
+			const isPieChart = currentChartType === 'pie';
+
+			return {
+				type: isPieChart ? 'pie' : 'bar',
+				data: {
+					labels: data.labels,
+					datasets: [{
+						label: '回答数',
+						data: data.datasets[0].data,
+						backgroundColor: isPieChart ? data.datasets[0].backgroundColor : '#36A2EB',
+						borderColor: isPieChart ? '#fff' : '#36A2EB',
+						borderWidth: 2
+					}]
+				},
+				options: {
+					responsive: true,
+					plugins: {
+						title: {
+							display: false
+						},
+						legend: {
+							position: isPieChart ? 'right' : 'top'
+						},
+						tooltip: {
+							callbacks: {
+								label: function (context) {
+									const value = context.parsed;
+									const percentage = data.percentages[context.dataIndex];
+									return `${context.label}: ${value}件 (${percentage}%)`;
+								}
+							}
+						}
+					},
+					scales: isPieChart ? {} : {
+						y: {
+							beginAtZero: true,
+							ticks: {
+								stepSize: 1
+							}
+						}
+					}
+				}
+			};
+		}
+
+		// チェックボックス用チャート設定
+		function createCheckboxChartConfig(data) {
+			return {
+				type: 'bar',
+				data: data,
+				options: {
+					responsive: true,
+					plugins: {
+						legend: {
+							display: false
+						},
+						tooltip: {
+							callbacks: {
+								label: function (context) {
+									const value = context.parsed.y;
+									const percentage = data.percentages[context.dataIndex];
+									return `${context.label}: ${value}件 (${percentage}%)`;
+								}
+							}
+						}
+					},
+					scales: {
+						y: {
+							beginAtZero: true,
+							ticks: {
+								stepSize: 1
+							}
+						}
+					}
+				}
+			};
+		}
+
+		// 文字数分布グラフを作成
+		function createLengthDistributionChart(distributionData) {
+			const ctx = document.getElementById('lengthDistChart').getContext('2d');
+
+			new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: distributionData.labels,
+					datasets: [{
+						label: '回答数',
+						data: distributionData.data,
+						backgroundColor: '#fd7e14',
+						borderColor: '#fd7e14',
+						borderWidth: 2
+					}]
+				},
+				options: {
+					responsive: true,
+					plugins: {
+						legend: {
+							display: false
+						}
+					},
+					scales: {
+						y: {
+							beginAtZero: true,
+							ticks: {
+								stepSize: 1
+							}
+						}
+					}
+				}
+			});
+		}
+
+		// 回答一覧を表示
+		function displayResponses(responses) {
+			const container = document.getElementById('responsesList');
+
+			const responsesHTML = responses.map((response, index) => `
+        <div class="response-item" data-content="${response.answer.toLowerCase()}">
+          <div class="d-flex justify-content-between">
+            <strong>会員ID: ${response.memberId}</strong>
+            <small class="text-muted">${response.length}文字</small>
+          </div>
+          <p class="mb-0 mt-2">${response.answer}</p>
+        </div>
+      `).join('');
+
+			container.innerHTML = responsesHTML;
+		}
+
+		// 回答フィルタ機能
+		function filterResponses() {
+			const searchTerm = document.getElementById('responseSearch').value.toLowerCase();
+			const responses = document.querySelectorAll('.response-item');
+
+			responses.forEach(response => {
+				const content = response.getAttribute('data-content');
+				if (content.includes(searchTerm)) {
+					response.style.display = 'block';
+				} else {
+					response.style.display = 'none';
+				}
+			});
+		}
+
+		// グラフタイプを切り替え
+		function toggleChartType() {
+			currentChartType = currentChartType === 'pie' ? 'bar' : 'pie';
+
+			// 現在表示中の設問を再描画
+			const questionTitle = document.getElementById('questionTitle').textContent;
+			const questionId = questionTitle.split(':')[0];
+			showQuestion(questionId);
+		}
+
+		// 統計情報を表示
+		function displayQuestionStatistics(data) {
+			const container = document.getElementById('questionStats');
+			const total = data.total || data.totalResponses;
+
+			let statsHTML = `
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-chart-bar me-2"></i>基本統計</h6>
+                <p class="mb-1"><strong>総回答数:</strong> ${total}</p>
+                <p class="mb-1"><strong>選択肢数:</strong> ${data.labels.length}</p>
+      `;
+
+			if (data.type === 'radio') {
+				const mostSelected = getMostSelected(data);
+				statsHTML += `<p class="mb-0"><strong>最多選択:</strong> ${mostSelected}</p>`;
+			} else {
+				const totalSelections = data.datasets[0].data.reduce((a, b) => a + b, 0);
+				statsHTML += `<p class="mb-0"><strong>総選択数:</strong> ${totalSelections}</p>`;
+			}
+
+			statsHTML += `
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-percentage me-2"></i>選択率</h6>
+      `;
+
+			data.labels.forEach((label, index) => {
+				const percentage = data.percentages[index];
+				statsHTML += `<p class="mb-1">${label}: ${percentage}%</p>`;
+			});
+
+			statsHTML += `
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+			container.innerHTML = statsHTML;
+		}
+
+		// テキスト統計を表示
+		function displayTextStatistics(data) {
+			const container = document.getElementById('questionStats');
+			const avgLength = calculateAverageLength(data.responses);
+
+			const statsHTML = `
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-chart-bar me-2"></i>基本統計</h6>
+                <p class="mb-1"><strong>総回答数:</strong> ${data.totalResponses}</p>
+                <p class="mb-1"><strong>平均文字数:</strong> ${avgLength}文字</p>
+                <p class="mb-0"><strong>ユニークワード:</strong> ${data.wordCloud.length}個</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-sort-amount-up me-2"></i>文字数</h6>
+                <p class="mb-1"><strong>最長:</strong> ${Math.max(...data.responses.map(r => r.length))}文字</p>
+                <p class="mb-1"><strong>最短:</strong> ${Math.min(...data.responses.map(r => r.length))}文字</p>
+                <p class="mb-0"><strong>中央値:</strong> ${calculateMedianLength(data.responses)}文字</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-crown me-2"></i>頻出ワード</h6>
+                ${data.wordCloud.slice(0, 3).map(([word, freq]) =>
+				`<p class="mb-1">${word}: ${freq}回</p>`
+			).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+			container.innerHTML = statsHTML;
+		}
+
+		// ユーティリティ関数
+		function getRandomColor() {
+			const colors = [
+				'#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+				'#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
+			];
+			return colors[Math.floor(Math.random() * colors.length)];
+		}
+
+		function getMostSelected(data) {
+			const maxIndex = data.datasets[0].data.indexOf(Math.max(...data.datasets[0].data));
+			return data.labels[maxIndex];
+		}
+
+		function calculateAverageLength(responses) {
+			const total = responses.reduce((sum, response) => sum + response.length, 0);
+			return Math.round(total / responses.length);
+		}
+
+		function calculateMedianLength(responses) {
+			const lengths = responses.map(r => r.length).sort((a, b) => a - b);
+			const mid = Math.floor(lengths.length / 2);
+			return lengths.length % 2 !== 0 ? lengths[mid] : Math.round((lengths[mid - 1] + lengths[mid]) / 2);
+		}
+
+		// UI制御関数
+		function showLoading() {
+			document.getElementById('loading').classList.remove('d-none');
+			document.getElementById('chartArea').classList.add('d-none');
+			document.getElementById('errorAlert').classList.add('d-none');
+		}
+
+		function hideLoading() {
+			document.getElementById('loading').classList.add('d-none');
+		}
+
+		function showChartArea() {
+			document.getElementById('chartArea').classList.remove('d-none');
+			document.getElementById('errorAlert').classList.add('d-none');
+		}
+
+		function showError(message) {
+			document.getElementById('errorMessage').textContent = message;
+			document.getElementById('errorAlert').classList.remove('d-none');
+			document.getElementById('loading').classList.add('d-none');
+			document.getElementById('chartArea').classList.add('d-none');
+		}
+
+		function refreshData() {
+			currentChart = null;
+			loadDashboard();
+		}
+
+		// エクスポート機能
+		function exportChart() {
+			if (currentChart) {
+				const url = currentChart.toBase64Image();
+				const link = document.createElement('a');
+				link.download = 'chart.png';
+				link.href = url;
+				link.click();
+			}
+		}
+
+		function exportAllData() {
+			// CSV出力機能（実装は簡略化）
+			alert('CSV出力機能は今後実装予定です。現在はスプレッドシートから直接エクスポートしてください。');
+		}
+	</script>
+</body>
+
+</html>
