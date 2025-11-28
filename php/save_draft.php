@@ -1,0 +1,74 @@
+<?php
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
+
+// エラーハンドリング
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+
+try {
+	// POSTデータの取得
+	$json = file_get_contents('php://input');
+	$data = json_decode($json, true);
+
+	if (!$data) {
+		throw new Exception('Invalid JSON data');
+	}
+
+	$facilityId = isset($data['facility_id']) ? trim($data['facility_id']) : '';
+	$answers = isset($data['answers']) ? $data['answers'] : [];
+
+	if (empty($facilityId)) {
+		throw new Exception('Facility ID is required');
+	}
+
+	// 保存データの作成
+	$saveData = [
+		'facility_id' => $facilityId,
+		'last_update' => date('Y-m-d\TH:i:sP'),
+		'status' => 'draft',
+		'answers' => $answers
+	];
+
+	// 保存ディレクトリの確認
+	$responseDir = __DIR__ . '/../data/responses';
+	if (!is_dir($responseDir)) {
+		mkdir($responseDir, 0755, true);
+	}
+
+	// ファイル名の生成
+	$filename = $responseDir . '/' . $facilityId . '_draft.json';
+
+	// バックアップの作成（既存ファイルがある場合）
+	if (file_exists($filename)) {
+		$backupDir = __DIR__ . '/../data/backups/' . date('Ymd');
+		if (!is_dir($backupDir)) {
+			mkdir($backupDir, 0755, true);
+		}
+
+		$backupFilename = $backupDir . '/' . $facilityId . '_draft_' . date('His') . '.json';
+		copy($filename, $backupFilename);
+	}
+
+	// ファイルへの保存
+	$result = file_put_contents($filename, json_encode($saveData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+
+	if ($result === false) {
+		throw new Exception('Failed to save draft');
+	}
+
+	echo json_encode([
+		'success' => true,
+		'message' => '一時保存しました',
+		'saved_at' => $saveData['last_update']
+	], JSON_UNESCAPED_UNICODE);
+} catch (Exception $e) {
+	echo json_encode([
+		'success' => false,
+		'message' => '一時保存に失敗しました。'
+	], JSON_UNESCAPED_UNICODE);
+
+	error_log('Save draft error: ' . $e->getMessage());
+}

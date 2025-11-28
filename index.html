@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>公開天文台白書2025 回答システム - ログイン</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<div class="container">
+		<header>
+			<h1>公開天文台白書2025 回答システム</h1>
+		</header>
+
+		<main class="login-container">
+			<div class="login-box">
+				<h2>ログイン</h2>
+				<p class="login-description">施設IDとパスワードを入力してログインしてください。</p>
+
+				<form id="loginForm">
+					<div class="form-group">
+						<label for="facilityId">施設ID</label>
+						<input type="text" id="facilityId" name="facilityId" required placeholder="例: 01-01" autocomplete="username">
+					</div>
+
+					<div class="form-group">
+						<label for="password">パスワード</label>
+						<input type="password" id="password" name="password" required autocomplete="current-password">
+					</div>
+
+					<div id="errorMessage" class="error-message" style="display: none;"></div>
+
+					<button type="submit" class="btn btn-primary">ログイン</button>
+				</form>
+			</div>
+		</main>
+
+		<footer>
+			<p>&copy; 2025 公開天文台白書2025 回答システム</p>
+		</footer>
+	</div>
+
+	<script src="js/auth.js"></script>
+</body>
+
+</html>

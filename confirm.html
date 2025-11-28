@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>確認画面 - 公開天文台白書2025</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<div class="container">
+		<header>
+			<h1>公開天文台白書2025 回答システム</h1>
+			<div class="header-info">
+				<span id="facilityName"></span>
+			</div>
+		</header>
+
+		<main class="confirm-container">
+			<h2>回答内容の確認</h2>
+			<p class="confirm-description">以下の内容で送信します。間違いがないかご確認ください。</p>
+
+			<div id="confirmContent" class="confirm-content"></div>
+
+			<div class="form-actions">
+				<button type="button" id="backBtn" class="btn btn-secondary">修正する</button>
+				<button type="button" id="submitBtn" class="btn btn-primary">送信する</button>
+			</div>
+
+			<div id="submitMessage" class="message" style="display: none;"></div>
+		</main>
+
+		<footer>
+			<p>&copy; 2025 公開天文台白書2025 回答システム</p>
+		</footer>
+	</div>
+
+	<script src="js/storage.js"></script>
+	<script>
+		// セッション確認
+		const session = Storage.getSession();
+		if (!session) {
+			window.location.href = 'index.html';
+		}
+
+		document.getElementById('facilityName').textContent = session.facility_name;
+
+		// 回答データの取得と表示
+		const answers = Storage.getDraft(session.facility_id);
+		let questions = [];
+
+		// 設問データの読み込み
+		fetch('php/get_data.php?type=questions')
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					questions = data.data.questions;
+					displayConfirmation(answers, questions);
+				}
+			});
+
+		function displayConfirmation(answers, questions) {
+			const container = document.getElementById('confirmContent');
+			container.innerHTML = '';
+
+			questions.filter(q => q.visible).forEach(question => {
+				const answer = answers[question.id];
+				if (answer) {
+					const div = document.createElement('div');
+					div.className = 'confirm-item';
+
+					const label = document.createElement('div');
+					label.className = 'confirm-label';
+					label.textContent = question.title;
+
+					const value = document.createElement('div');
+					value.className = 'confirm-value';
+
+					if (Array.isArray(answer)) {
+						value.textContent = answer.join(', ');
+					} else {
+						value.textContent = answer;
+					}
+
+					div.appendChild(label);
+					div.appendChild(value);
+					container.appendChild(div);
+				}
+			});
+		}
+
+		// 戻るボタン
+		document.getElementById('backBtn').addEventListener('click', () => {
+			window.location.href = 'survey.html';
+		});
+
+		// 送信ボタン
+		document.getElementById('submitBtn').addEventListener('click', async () => {
+			const submitBtn = document.getElementById('submitBtn');
+			submitBtn.disabled = true;
+			submitBtn.textContent = '送信中...';
+
+			try {
+				const response = await fetch('php/submit.php', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						facility_id: session.facility_id,
+						answers: answers
+					})
+				});
+
+				const result = await response.json();
+
+				if (result.success) {
+					// 一時保存データをクリア
+					Storage.clearDraft(session.facility_id);
+					// 完了画面へ
+					window.location.href = 'complete.html?datetime=' + encodeURIComponent(result.submit_datetime);
+				} else {
+					alert('送信に失敗しました: ' + result.message);
+					submitBtn.disabled = false;
+					submitBtn.textContent = '送信する';
+				}
+			} catch (error) {
+				alert('エラーが発生しました: ' + error.message);
+				submitBtn.disabled = false;
+				submitBtn.textContent = '送信する';
+			}
+		});
+	</script>
+</body>
+
+</html>

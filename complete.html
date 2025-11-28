@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>送信完了 - 公開天文台白書2025</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<div class="container">
+		<header>
+			<h1>公開天文台白書2025 回答システム</h1>
+		</header>
+
+		<main class="complete-container">
+			<div class="complete-message">
+				<h2>送信が完了しました</h2>
+				<p>ご協力ありがとうございました。</p>
+				<p class="submit-datetime">送信日時: <span id="submitDatetime"></span></p>
+
+				<div class="complete-info">
+					<p>回答内容は正常に受信されました。</p>
+					<p>ご不明な点がございましたら、事務局までお問い合わせください。</p>
+				</div>
+
+				<button id="homeBtn" class="btn btn-primary">トップページへ戻る</button>
+			</div>
+		</main>
+
+		<footer>
+			<p>&copy; 2025 公開天文台白書2025 回答システム</p>
+		</footer>
+	</div>
+
+	<script src="js/storage.js"></script>
+	<script>
+		// URLパラメータから送信日時を取得
+		const urlParams = new URLSearchParams(window.location.search);
+		const datetime = urlParams.get('datetime');
+
+		if (datetime) {
+			const date = new Date(datetime);
+			document.getElementById('submitDatetime').textContent =
+				date.toLocaleString('ja-JP', {
+					year: 'numeric',
+					month: '2-digit',
+					day: '2-digit',
+					hour: '2-digit',
+					minute: '2-digit'
+				});
+		}
+
+		// トップページへ戻るボタン
+		document.getElementById('homeBtn').addEventListener('click', () => {
+			// セッションをクリア
+			Storage.clearSession();
+			window.location.href = 'index.html';
+		});
+	</script>
+</body>
+
+</html>

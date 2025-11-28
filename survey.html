@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>回答フォーム - 公開天文台白書2025</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<div class="container">
+		<header>
+			<h1>公開天文台白書2025 回答システム</h1>
+			<div class="header-info">
+				<span id="facilityName"></span>
+				<button id="logoutBtn" class="btn btn-secondary">ログアウト</button>
+			</div>
+		</header>
+
+		<main class="survey-container">
+			<div class="progress-bar">
+				<div id="progressFill" class="progress-fill"></div>
+			</div>
+			<p class="progress-text">回答状況: <span id="progressText">0%</span></p>
+
+			<form id="surveyForm">
+				<div id="questionsContainer"></div>
+
+				<div class="form-actions">
+					<button type="button" id="saveDraftBtn" class="btn btn-secondary">一時保存</button>
+					<button type="button" id="confirmBtn" class="btn btn-primary">確認画面へ</button>
+				</div>
+			</form>
+
+			<div id="saveMessage" class="save-message" style="display: none;"></div>
+		</main>
+
+		<footer>
+			<p>&copy; 2025 公開天文台白書2025 回答システム</p>
+		</footer>
+	</div>
+
+	<script src="js/storage.js"></script>
+	<script src="js/validation.js"></script>
+	<script src="js/survey.js"></script>
+</body>
+
+</html>

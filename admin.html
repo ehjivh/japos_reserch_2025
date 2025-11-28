@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>管理画面 - 公開天文台白書2025</title>
+	<link rel="stylesheet" href="css/style.css">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<header>
+			<h1>公開天文台白書2025 回答システム - 管理画面</h1>
+		</header>
+
+		<main class="admin-container">
+			<h2>回答状況</h2>
+
+			<div class="stats-grid">
+				<div class="stat-card">
+					<h3>総施設数</h3>
+					<div class="stat-value" id="totalFacilities">-</div>
+				</div>
+				<div class="stat-card">
+					<h3>送信済み</h3>
+					<div class="stat-value" id="submitted">-</div>
+				</div>
+				<div class="stat-card">
+					<h3>一時保存</h3>
+					<div class="stat-value" id="draft">-</div>
+				</div>
+				<div class="stat-card">
+					<h3>未着手</h3>
+					<div class="stat-value" id="notStarted">-</div>
+				</div>
+			</div>
+
+			<div style="margin: 30px 0;">
+				<canvas id="statusChart" width="400" height="200"></canvas>
+			</div>
+
+			<h2>施設一覧</h2>
+
+			<div style="margin-bottom: 20px;">
+				<button class="btn btn-secondary" onclick="filterStatus('all')">全て</button>
+				<button class="btn btn-secondary" onclick="filterStatus('submitted')">送信済み</button>
+				<button class="btn btn-secondary" onclick="filterStatus('draft')">一時保存</button>
+				<button class="btn btn-secondary" onclick="filterStatus('not_started')">未着手</button>
+			</div>
+
+			<div class="table-container">
+				<table id="facilitiesTable">
+					<thead>
+						<tr>
+							<th>施設ID</th>
+							<th>施設名</th>
+							<th>状態</th>
+							<th>日時</th>
+						</tr>
+					</thead>
+					<tbody id="facilitiesTableBody">
+						<tr>
+							<td colspan="4">データを読み込んでいます...</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<h2>設問別集計</h2>
+			<div id="questionsStats"></div>
+		</main>
+
+		<footer>
+			<p>&copy; 2025 公開天文台白書2025 回答システム</p>
+		</footer>
+	</div>
+
+	<script src="js/admin.js"></script>
+</body>
+
+</html>
