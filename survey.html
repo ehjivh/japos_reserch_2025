@@ -25,12 +25,13 @@
 			<p class="progress-text">回答状況: <span id="progressText">0%</span></p>
 
 			<form id="surveyForm">
-				<div id="questionsContainer"></div>
-
 				<div class="form-actions">
 					<button type="button" id="saveDraftBtn" class="btn btn-secondary">一時保存</button>
+					<button type="button" id="exportPdfBtn" class="btn btn-secondary">PDF出力</button>
 					<button type="button" id="confirmBtn" class="btn btn-primary">確認画面へ</button>
 				</div>
+
+				<div id="questionsContainer"></div>
 			</form>
 
 			<div id="saveMessage" class="save-message" style="display: none;"></div>
@@ -41,6 +42,7 @@
 		</footer>
 	</div>
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 	<script src="js/storage.js"></script>
 	<script src="js/validation.js"></script>
 	<script src="js/survey.js"></script>

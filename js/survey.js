@@ -178,6 +178,111 @@
 		}, 3000);
 	});
 
+	// PDF出力ボタン
+	document.getElementById('exportPdfBtn').addEventListener('click', () => {
+		exportToPDF();
+	});
+
+	// PDF出力機能
+	function exportToPDF() {
+		try {
+			const {
+				jsPDF
+			} = window.jspdf;
+			const doc = new jsPDF({
+				orientation: 'portrait',
+				unit: 'mm',
+				format: 'a4'
+			});
+
+			// 日本語フォント設定（デフォルトフォントを使用）
+			doc.setFont('helvetica');
+
+			let yPos = 20;
+			const pageHeight = doc.internal.pageSize.height;
+			const margin = 15;
+			const lineHeight = 7;
+
+			// タイトル
+			doc.setFontSize(16);
+			doc.text('公開天文台白書2025 回答内容', margin, yPos);
+			yPos += 10;
+
+			// 施設情報
+			doc.setFontSize(12);
+			doc.text(`施設名: ${session.facility_name}`, margin, yPos);
+			yPos += 8;
+			doc.text(`施設ID: ${session.facility_id}`, margin, yPos);
+			yPos += 8;
+			doc.text(`出力日時: ${new Date().toLocaleString('ja-JP')}`, margin, yPos);
+			yPos += 12;
+
+			// 回答内容
+			doc.setFontSize(10);
+			questions.filter(q => q.visible).forEach(question => {
+				// 改ページチェック
+				if (yPos > pageHeight - 30) {
+					doc.addPage();
+					yPos = 20;
+				}
+
+				// 設問タイトル
+				doc.setFont('helvetica', 'bold');
+				const titleLines = doc.splitTextToSize(`Q: ${question.title}`, 180);
+				titleLines.forEach(line => {
+					if (yPos > pageHeight - 20) {
+						doc.addPage();
+						yPos = 20;
+					}
+					doc.text(line, margin, yPos);
+					yPos += lineHeight;
+				});
+
+				// 回答内容
+				doc.setFont('helvetica', 'normal');
+				const answer = answers[question.id];
+				let answerText = '';
+
+				if (answer) {
+					if (Array.isArray(answer)) {
+						answerText = answer.join(', ');
+					} else {
+						answerText = String(answer);
+					}
+				} else {
+					answerText = '(未回答)';
+				}
+
+				const answerLines = doc.splitTextToSize(`A: ${answerText}`, 180);
+				answerLines.forEach(line => {
+					if (yPos > pageHeight - 20) {
+						doc.addPage();
+						yPos = 20;
+					}
+					doc.text(line, margin, yPos);
+					yPos += lineHeight;
+				});
+
+				yPos += 5; // 設問間のスペース
+			});
+
+			// PDFを保存
+			const fileName = `公開天文台白書2025_${session.facility_id}_${new Date().toISOString().split('T')[0]}.pdf`;
+			doc.save(fileName);
+
+			const saveMessage = document.getElementById('saveMessage');
+			saveMessage.textContent = 'PDFを出力しました';
+			saveMessage.style.display = 'block';
+			setTimeout(() => {
+				saveMessage.style.display = 'none';
+			}, 3000);
+
+		} catch (error) {
+			console.error('PDF export error:', error);
+			alert('PDF出力に失敗しました。');
+		}
+	}
+
 	// 確認画面へボタン
 	document.getElementById('confirmBtn').addEventListener('click', () => {
 		// バリデーション
