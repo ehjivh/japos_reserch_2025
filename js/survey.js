@@ -90,6 +90,9 @@
 				case 'radio':
 					const radioGroup = document.createElement('div');
 					radioGroup.className = 'radio-group';
+
+					const hasOtherOption = question.options.some(opt => opt === 'その他');
+
 					question.options.forEach(option => {
 						const label = document.createElement('label');
 						label.className = 'radio-option';
@@ -98,19 +101,43 @@
 						radio.type = 'radio';
 						radio.name = question.id;
 						radio.value = option;
-						radio.checked = answers[question.id] === option;
-						radio.addEventListener('change', () => handleInputChange(question.id, option));
+						radio.checked = answers[question.id] === option ||
+							(option === 'その他' && answers[question.id] && !question.options.includes(answers[question.id]));
+
+						if (option === 'その他' && hasOtherOption) {
+							radio.addEventListener('change', () => {
+								handleRadioWithOtherChange(question.id, option, radioGroup);
+							});
+						} else {
+							radio.addEventListener('change', () => {
+								handleInputChange(question.id, option);
+								// 「その他」以外を選択したら、その他の入力欄を削除
+								const otherInput = radioGroup.querySelector('.other-input');
+								if (otherInput) {
+									otherInput.remove();
+								}
+							});
+						}
 
 						label.appendChild(radio);
 						label.appendChild(document.createTextNode(option));
 						radioGroup.appendChild(label);
 					});
+
+					// 既存の「その他」の回答があれば表示
+					if (hasOtherOption && answers[question.id] && !question.options.includes(answers[question.id])) {
+						createOtherInput(radioGroup, question.id, answers[question.id]);
+					}
+
 					inputDiv.appendChild(radioGroup);
 					break;
 
 				case 'checkbox':
 					const checkboxGroup = document.createElement('div');
 					checkboxGroup.className = 'checkbox-group';
+
+					const hasCheckboxOther = question.options.some(opt => opt === 'その他');
+
 					question.options.forEach(option => {
 						const label = document.createElement('label');
 						label.className = 'checkbox-option';
@@ -120,13 +147,31 @@
 						checkbox.name = question.id;
 						checkbox.value = option;
 						const currentAnswers = answers[question.id];
-						checkbox.checked = Array.isArray(currentAnswers) && currentAnswers.includes(option);
-						checkbox.addEventListener('change', () => handleCheckboxChange(question.id));
+						checkbox.checked = Array.isArray(currentAnswers) &&
+							(currentAnswers.includes(option) ||
+								(option === 'その他' && currentAnswers.some(ans => !question.options.includes(ans))));
+
+						if (option === 'その他' && hasCheckboxOther) {
+							checkbox.addEventListener('change', () => {
+								handleCheckboxWithOtherChange(question.id, checkboxGroup);
+							});
+						} else {
+							checkbox.addEventListener('change', () => handleCheckboxChange(question.id));
+						}
 
 						label.appendChild(checkbox);
 						label.appendChild(document.createTextNode(option));
 						checkboxGroup.appendChild(label);
 					});
+
+					// 既存の「その他」の回答があれば表示
+					if (hasCheckboxOther && Array.isArray(answers[question.id])) {
+						const otherAnswers = answers[question.id].filter(ans => !question.options.includes(ans));
+						if (otherAnswers.length > 0) {
+							createOtherInput(checkboxGroup, question.id, otherAnswers.join(', '), true);
+						}
+					}
+
 					inputDiv.appendChild(checkboxGroup);
 					break;
 			}
@@ -146,6 +191,95 @@
 	function handleCheckboxChange(questionId) {
 		const checkboxes = document.querySelectorAll(`input[name="${questionId}"]:checked`);
 		const values = Array.from(checkboxes).map(cb => cb.value);
+		answers[questionId] = values;
+		updateProgress();
+	}
+
+	// 「その他」の入力フィールドを作成
+	function createOtherInput(container, questionId, value = '', isCheckbox = false) {
+		// 既存の入力欄があれば削除
+		const existingInput = container.querySelector('.other-input');
+		if (existingInput) {
+			existingInput.remove();
+		}
+
+		const otherInputDiv = document.createElement('div');
+		otherInputDiv.className = 'other-input';
+		otherInputDiv.style.marginLeft = '30px';
+		otherInputDiv.style.marginTop = '10px';
+
+		const otherInput = document.createElement('input');
+		otherInput.type = 'text';
+		otherInput.placeholder = '具体的な内容を入力してください';
+		otherInput.value = value;
+		otherInput.style.width = '100%';
+		otherInput.style.padding = '8px';
+		otherInput.style.border = '1px solid #ccc';
+		otherInput.style.borderRadius = '4px';
+
+		otherInput.addEventListener('input', () => {
+			if (isCheckbox) {
+				handleCheckboxWithOtherSave(questionId, container, otherInput.value);
+			} else {
+				handleInputChange(questionId, otherInput.value);
+			}
+		});
+
+		otherInputDiv.appendChild(otherInput);
+		container.appendChild(otherInputDiv);
+
+		// フォーカスを当てる
+		setTimeout(() => otherInput.focus(), 100);
+	}
+
+	// ラジオボタンの「その他」変更ハンドラ
+	function handleRadioWithOtherChange(questionId, option, radioGroup) {
+		createOtherInput(radioGroup, questionId, '', false);
+	}
+
+	// チェックボックスの「その他」変更ハンドラ
+	function handleCheckboxWithOtherChange(questionId, checkboxGroup) {
+		const otherCheckbox = checkboxGroup.querySelector('input[value="その他"]');
+
+		if (otherCheckbox.checked) {
+			// 「その他」がチェックされた場合、入力欄を表示
+			const existingInput = checkboxGroup.querySelector('.other-input input');
+			const currentValue = existingInput ? existingInput.value : '';
+			createOtherInput(checkboxGroup, questionId, currentValue, true);
+		} else {
+			// 「その他」のチェックが外れた場合、入力欄を削除
+			const otherInput = checkboxGroup.querySelector('.other-input');
+			if (otherInput) {
+				otherInput.remove();
+			}
+		}
+
+		// チェックボックスの値を保存
+		handleCheckboxWithOtherSave(questionId, checkboxGroup, '');
+	}
+
+	// チェックボックスの「その他」を含む値を保存
+	function handleCheckboxWithOtherSave(questionId, checkboxGroup, otherText) {
+		const checkboxes = checkboxGroup.querySelectorAll('input[type="checkbox"]:checked');
+		const values = [];
+
+		checkboxes.forEach(cb => {
+			if (cb.value === 'その他') {
+				// 「その他」の場合は入力されたテキストを保存
+				if (otherText && otherText.trim() !== '') {
+					values.push(otherText.trim());
+				} else {
+					// 入力欄から直接取得
+					const otherInput = checkboxGroup.querySelector('.other-input input');
+					if (otherInput && otherInput.value.trim() !== '') {
+						values.push(otherInput.value.trim());
+					}
+				}
+			} else {
+				values.push(cb.value);
+			}
+		});
+
 		answers[questionId] = values;
 		updateProgress();
 	}
@@ -184,62 +318,46 @@
 	});
 
 	// PDF出力機能
-	function exportToPDF() {
+	async function exportToPDF() {
 		try {
-			const {
-				jsPDF
-			} = window.jspdf;
-			const doc = new jsPDF({
-				orientation: 'portrait',
-				unit: 'mm',
-				format: 'a4'
-			});
+			const saveMessage = document.getElementById('saveMessage');
+			saveMessage.textContent = 'PDF出力中...';
+			saveMessage.style.display = 'block';
 
-			// 日本語フォント設定（デフォルトフォントを使用）
-			doc.setFont('helvetica');
+			// PDFに含めるコンテンツを作成
+			const printContainer = document.createElement('div');
+			printContainer.style.cssText = `
+				position: absolute;
+				left: -9999px;
+				top: 0;
+				width: 210mm;
+				background: white;
+				padding: 20px;
+				font-family: 'MS Gothic', 'Yu Gothic', sans-serif;
+			`;
 
-			let yPos = 20;
-			const pageHeight = doc.internal.pageSize.height;
-			const margin = 15;
-			const lineHeight = 7;
-
-			// タイトル
-			doc.setFontSize(16);
-			doc.text('公開天文台白書2025 回答内容', margin, yPos);
-			yPos += 10;
-
-			// 施設情報
-			doc.setFontSize(12);
-			doc.text(`施設名: ${session.facility_name}`, margin, yPos);
-			yPos += 8;
-			doc.text(`施設ID: ${session.facility_id}`, margin, yPos);
-			yPos += 8;
-			doc.text(`出力日時: ${new Date().toLocaleString('ja-JP')}`, margin, yPos);
-			yPos += 12;
+			// ヘッダー情報
+			const header = document.createElement('div');
+			header.innerHTML = `
+				<h1 style="font-size: 20px; margin-bottom: 20px;">公開天文台白書2025 回答内容</h1>
+				<div style="margin-bottom: 10px;"><strong>施設名:</strong> ${session.facility_name}</div>
+				<div style="margin-bottom: 10px;"><strong>施設ID:</strong> ${session.facility_id}</div>
+				<div style="margin-bottom: 20px;"><strong>出力日時:</strong> ${new Date().toLocaleString('ja-JP')}</div>
+				<hr style="margin-bottom: 20px;">
+			`;
+			printContainer.appendChild(header);
 
 			// 回答内容
-			doc.setFontSize(10);
-			questions.filter(q => q.visible).forEach(question => {
-				// 改ページチェック
-				if (yPos > pageHeight - 30) {
-					doc.addPage();
-					yPos = 20;
-				}
+			const questionsContent = document.createElement('div');
+			questions.filter(q => q.visible).forEach((question, index) => {
+				const questionDiv = document.createElement('div');
+				questionDiv.style.cssText = 'margin-bottom: 20px; page-break-inside: avoid;';
 
-				// 設問タイトル
-				doc.setFont('helvetica', 'bold');
-				const titleLines = doc.splitTextToSize(`Q: ${question.title}`, 180);
-				titleLines.forEach(line => {
-					if (yPos > pageHeight - 20) {
-						doc.addPage();
-						yPos = 20;
-					}
-					doc.text(line, margin, yPos);
-					yPos += lineHeight;
-				});
+				const questionTitle = document.createElement('div');
+				questionTitle.style.cssText = 'font-weight: bold; margin-bottom: 5px; color: #333;';
+				questionTitle.textContent = `Q${index + 1}: ${question.title}`;
+				questionDiv.appendChild(questionTitle);
 
-				// 回答内容
-				doc.setFont('helvetica', 'normal');
 				const answer = answers[question.id];
 				let answerText = '';
 
@@ -253,33 +371,68 @@
 					answerText = '(未回答)';
 				}
 
-				const answerLines = doc.splitTextToSize(`A: ${answerText}`, 180);
-				answerLines.forEach(line => {
-					if (yPos > pageHeight - 20) {
-						doc.addPage();
-						yPos = 20;
-					}
-					doc.text(line, margin, yPos);
-					yPos += lineHeight;
-				});
+				const answerDiv = document.createElement('div');
+				answerDiv.style.cssText = 'margin-left: 20px; color: #555; white-space: pre-wrap;';
+				answerDiv.textContent = `A: ${answerText}`;
+				questionDiv.appendChild(answerDiv);
 
-				yPos += 5; // 設問間のスペース
+				questionsContent.appendChild(questionDiv);
 			});
+			printContainer.appendChild(questionsContent);
+
+			document.body.appendChild(printContainer);
+
+			// html2canvasでHTMLを画像に変換
+			const canvas = await html2canvas(printContainer, {
+				scale: 2,
+				useCORS: true,
+				logging: false,
+				backgroundColor: '#ffffff'
+			});
+
+			document.body.removeChild(printContainer);
+
+			// jsPDFでPDFを作成
+			const {
+				jsPDF
+			} = window.jspdf;
+			const imgWidth = 210; // A4幅（mm）
+			const pageHeight = 297; // A4高さ（mm）
+			const imgHeight = (canvas.height * imgWidth) / canvas.width;
+			let heightLeft = imgHeight;
+
+			const doc = new jsPDF('p', 'mm', 'a4');
+			let position = 0;
+
+			const imgData = canvas.toDataURL('image/png');
+			doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+			heightLeft -= pageHeight;
+
+			// 複数ページが必要な場合
+			while (heightLeft > 0) {
+				position = heightLeft - imgHeight;
+				doc.addPage();
+				doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+				heightLeft -= pageHeight;
+			}
 
 			// PDFを保存
 			const fileName = `公開天文台白書2025_${session.facility_id}_${new Date().toISOString().split('T')[0]}.pdf`;
 			doc.save(fileName);
 
-			const saveMessage = document.getElementById('saveMessage');
 			saveMessage.textContent = 'PDFを出力しました';
-			saveMessage.style.display = 'block';
 			setTimeout(() => {
 				saveMessage.style.display = 'none';
 			}, 3000);
 
 		} catch (error) {
 			console.error('PDF export error:', error);
-			alert('PDF出力に失敗しました。');
+			const saveMessage = document.getElementById('saveMessage');
+			saveMessage.textContent = 'PDF出力に失敗しました';
+			saveMessage.style.display = 'block';
+			setTimeout(() => {
+				saveMessage.style.display = 'none';
+			}, 3000);
 		}
 	}
 
