@@ -304,7 +304,7 @@
 
 		const saveMessage = document.getElementById('saveMessage');
 		const date = new Date(savedAt);
-		saveMessage.textContent = `保存しました (${date.toLocaleString('ja-JP')})`;
+		saveMessage.textContent = `一時保存が完了しました。 (${date.toLocaleString('ja-JP')})`;
 		saveMessage.style.display = 'block';
 
 		setTimeout(() => {
