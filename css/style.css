@@ -252,6 +252,16 @@ footer {
 	text-align: center;
 }
 
+.submitted-banner {
+	background-color: #3498db;
+	color: white;
+	padding: 15px;
+	border-radius: 4px;
+	margin-bottom: 20px;
+	text-align: center;
+	font-size: 16px;
+}
+
 /* 確認画面 */
 .confirm-container {
 	background: white;

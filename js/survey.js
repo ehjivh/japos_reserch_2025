@@ -16,6 +16,15 @@
 	// 初期化
 	async function init() {
 		try {
+			// 回答済み状態のチェック
+			const submissionStatusResponse = await fetch(`php/get_data.php?type=submission_status&facility_id=${session.facility_id}`);
+			const submissionStatusData = await submissionStatusResponse.json();
+
+			if (submissionStatusData.success && submissionStatusData.data.is_submitted) {
+				// 回答済みバナーを表示
+				document.getElementById('submittedBanner').style.display = 'block';
+			}
+
 			// 設問データの取得
 			const questionsResponse = await fetch('php/get_data.php?type=questions');
 			const questionsData = await questionsResponse.json();

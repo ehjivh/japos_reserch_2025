@@ -76,6 +76,34 @@ try {
 			], JSON_UNESCAPED_UNICODE);
 			break;
 
+		case 'submission_status':
+			// 回答済み状態の確認
+			$facilityId = isset($_GET['facility_id']) ? $_GET['facility_id'] : '';
+
+			if (empty($facilityId)) {
+				throw new Exception('Facility ID is required');
+			}
+
+			$responseFile = __DIR__ . '/../data/responses/' . $facilityId . '_response.json';
+			$isSubmitted = false;
+
+			if (file_exists($responseFile)) {
+				$responseJson = file_get_contents($responseFile);
+				$responseData = json_decode($responseJson, true);
+
+				if ($responseData && isset($responseData['status']) && $responseData['status'] === 'submitted') {
+					$isSubmitted = true;
+				}
+			}
+
+			echo json_encode([
+				'success' => true,
+				'data' => [
+					'is_submitted' => $isSubmitted
+				]
+			], JSON_UNESCAPED_UNICODE);
+			break;
+
 		default:
 			throw new Exception('Invalid type parameter');
 	}
