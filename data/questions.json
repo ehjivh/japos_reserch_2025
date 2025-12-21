@@ -8,27 +8,27 @@
       "required": false,
       "order": 1,
       "visible": true,
-      "description": "半角で入力してください。"
+      "description": "施設IDを半角で入力してください。"
     },
     {
       "id": "Q002",
-      "title": "メールアドレス",
+      "title": "回答担当者のメールアドレス",
       "type": "text",
       "options": [],
       "required": false,
       "order": 2,
       "visible": true,
-      "description": ""
+      "description": "内容の確認連絡に使用します。公開はされません。"
     },
     {
       "id": "Q003",
-      "title": "ご担当者名",
+      "title": "回答担当者名",
       "type": "text",
       "options": [],
       "required": false,
       "order": 3,
       "visible": true,
-      "description": ""
+      "description": "公開はされません。"
     },
     {
       "id": "Q004",
@@ -38,7 +38,7 @@
       "required": false,
       "order": 4,
       "visible": true,
-      "description": ""
+      "description": "半角ハイフン区切りで入力してください。"
     },
     {
       "id": "Q005",
@@ -71,34 +71,14 @@
       "description": ""
     },
     {
-      "id": "Q008",
-      "title": "施設の開設年（西暦）",
-      "type": "text",
-      "options": [],
-      "required": false,
-      "order": 8,
-      "visible": true,
-      "description": ""
-    },
-    {
-      "id": "Q009",
-      "title": "施設の開設月",
-      "type": "text",
-      "options": [],
-      "required": false,
-      "order": 9,
-      "visible": true,
-      "description": ""
-    },
-    {
       "id": "Q010",
       "title": "天文台の所在地の郵便番号",
       "type": "text",
       "options": [],
       "required": false,
-      "order": 10,
+      "order": 8,
       "visible": true,
-      "description": ""
+      "description": "半角ハイフン区切りで入力してください。"
     },
     {
       "id": "Q011",
@@ -106,7 +86,7 @@
       "type": "text",
       "options": [],
       "required": false,
-      "order": 11,
+      "order": 9,
       "visible": true,
       "description": ""
     },
@@ -116,7 +96,7 @@
       "type": "text",
       "options": [],
       "required": false,
-      "order": 12,
+      "order": 10,
       "visible": true,
       "description": ""
     },
@@ -126,49 +106,79 @@
       "type": "text",
       "options": [],
       "required": false,
-      "order": 13,
+      "order": 11,
       "visible": true,
-      "description": ""
+      "description": "http:// または https:// から入力してください。"
     },
     {
       "id": "Q014",
-      "title": "InstagramのID",
+      "title": "InstagramのアカウントID",
+      "type": "text",
+      "options": [],
+      "required": false,
+      "order": 12,
+      "visible": true,
+      "description": "アカウントをお持ちの場合、IDを入力してください。"
+    },
+    {
+      "id": "Q015",
+      "title": "YouTubeチャンネルのURL",
+      "type": "text",
+      "options": [],
+      "required": false,
+      "order": 13,
+      "visible": true,
+      "description": "チャンネルをお持ちの場合、URLを入力してください。"
+    },
+    {
+      "id": "Q016",
+      "title": "FacebookページのURL",
       "type": "text",
       "options": [],
       "required": false,
       "order": 14,
       "visible": true,
-      "description": ""
+      "description": "ページをお持ちの場合、URLを入力してください。"
     },
     {
-      "id": "Q015",
-      "title": "YouTubeチャネルのID",
+      "id": "Q017",
+      "title": "X（旧Twitter）のアカウントID",
       "type": "text",
       "options": [],
       "required": false,
       "order": 15,
       "visible": true,
-      "description": ""
+      "description": "アカウントをお持ちの場合、@を除いたIDを入力してください。"
     },
     {
-      "id": "Q016",
-      "title": "FacebookのID",
+      "id": "Q032",
+      "title": "施設のセールスポイント",
       "type": "text",
       "options": [],
       "required": false,
       "order": 16,
       "visible": true,
-      "description": ""
+      "description": "白書やWebでの紹介文として使用します（200文字程度推奨）。"
     },
     {
-      "id": "Q017",
-      "title": "XのID",
+      "id": "Q008",
+      "title": "施設の開設年（西暦）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 17,
       "visible": true,
-      "description": ""
+      "description": "半角数字4桁で入力してください。"
+    },
+    {
+      "id": "Q009",
+      "title": "施設の開設月",
+      "type": "text",
+      "options": [],
+      "required": false,
+      "order": 18,
+      "visible": true,
+      "description": "半角数字で入力してください。"
     },
     {
       "id": "Q018",
@@ -176,33 +186,23 @@
       "type": "text",
       "options": [],
       "required": false,
-      "order": 18,
-      "visible": true,
-      "description": "必須ではないメディアへの情報提供を意図しております。夜間観望会については別欄でお尋ねします。"
-    },
-    {
-      "id": "Q019",
-      "title": "施設の閉館時間",
-      "type": "text",
-      "options": [],
-      "required": false,
       "order": 19,
       "visible": true,
-      "description": ""
+      "description": "例：09:00～17:00（夜間観望会については別欄でお尋ねします）"
     },
     {
       "id": "Q020",
-      "title": "施設の開館時間について、例外などがあればお書きください",
+      "title": "施設の開館時間についての補足",
       "type": "text",
       "options": [],
       "required": false,
       "order": 20,
       "visible": true,
-      "description": ""
+      "description": "曜日や季節による変動がある場合はお書きください。"
     },
     {
       "id": "Q021",
-      "title": "施設の休館日・定休日（当てはまるものすべて）をお選びください",
+      "title": "施設の休館日・定休日（複数選択可）",
       "type": "checkbox",
       "options": [
         "月曜日",
@@ -213,10 +213,11 @@
         "土曜日",
         "日曜日",
         "祝日",
-        "定休日が祝日ならばその次の日",
+        "定休日が祝日の場合の翌日",
         "年末年始",
         "不定休",
-        "冬季休業"
+        "冬季休業",
+        "なし"
       ],
       "required": false,
       "order": 21,
@@ -225,17 +226,17 @@
     },
     {
       "id": "Q022",
-      "title": "休館定休日について、例外があればお書きください。",
+      "title": "休館日・定休日についての補足",
       "type": "text",
       "options": [],
       "required": false,
       "order": 22,
       "visible": true,
-      "description": ""
+      "description": "例外的な開館・休館ルールがあればお書きください。"
     },
     {
       "id": "Q023",
-      "title": "施設の入館料をお答えください。",
+      "title": "施設の入館料の有無",
       "type": "radio",
       "options": [
         "有料",
@@ -248,150 +249,165 @@
     },
     {
       "id": "Q024",
-      "title": "(有料の場合)入館料の料金（大人・円）",
+      "title": "(有料の場合)入館料：大人（円）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 24,
       "visible": true,
-      "description": ""
+      "description": "半角数字のみ入力してください。"
     },
     {
       "id": "Q025",
-      "title": "(有料の場合)入館料の料金（大学生・円）",
+      "title": "(有料の場合)入館料：大学生（円）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 25,
       "visible": true,
-      "description": ""
+      "description": "半角数字のみ入力してください。設定がない場合は空欄。"
     },
     {
       "id": "Q026",
-      "title": "(有料の場合)入館料の料金（高校生・円）",
+      "title": "(有料の場合)入館料：高校生（円）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 26,
       "visible": true,
-      "description": ""
+      "description": "半角数字のみ入力してください。設定がない場合は空欄。"
     },
     {
       "id": "Q027",
-      "title": "(有料の場合)入館料の料金（中学生・円）",
+      "title": "(有料の場合)入館料：中学生（円）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 27,
       "visible": true,
-      "description": ""
+      "description": "半角数字のみ入力してください。設定がない場合は空欄。"
     },
     {
       "id": "Q028",
-      "title": "(有料の場合)入館料の料金（小学生・円）",
+      "title": "(有料の場合)入館料：小学生（円）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 28,
       "visible": true,
-      "description": ""
+      "description": "半角数字のみ入力してください。設定がない場合は空欄。"
     },
     {
-      "id": "Q029",
-      "title": "駐車場（台・半角数字のみ）",
-      "type": "text",
-      "options": [],
+      "id": "Q120",
+      "title": "実施している入館料等の割引制度（複数選択可）",
+      "type": "checkbox",
+      "options": [
+        "団体割引",
+        "障害者割引",
+        "高齢者割引",
+        "地域住民（市町村民）割引",
+        "会員割引（JAF・互助会等）",
+        "提携施設割引",
+        "その他",
+        "なし"
+      ],
       "required": false,
       "order": 29,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q030",
-      "title": "夜間観望会における天文台の交通の便についてお答えください。アクセスについて、最寄りの駅までの距離は何kmですか？",
+      "id": "Q029",
+      "title": "駐車場（台数）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 30,
       "visible": true,
-      "description": ""
+      "description": "半角数字のみ入力してください。"
     },
     {
-      "id": "Q031",
-      "title": "夜間観望会における天文台の交通の便についてお答えください。最寄りのインターチェンジまでの距離は何kmですか。",
+      "id": "Q030",
+      "title": "公共交通機関でのアクセス：最寄りの駅・バス停までの距離（km）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 31,
       "visible": true,
-      "description": ""
+      "description": "夜間観望会への参加を想定し、概算距離を半角数字で入力してください。"
     },
     {
-      "id": "Q032",
-      "title": "施設のセールスポイントがあればお書きください",
+      "id": "Q031",
+      "title": "自家用車でのアクセス：最寄りのインターチェンジまでの距離（km）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 32,
-      "visible": false,
-      "description": ""
+      "visible": true,
+      "description": "概算距離を半角数字で入力してください。"
     },
     {
-      "id": "Q035",
-      "title": "天文台の開設年（西暦／一般利用開始年）",
-      "type": "text",
-      "options": [],
+      "id": "Q068",
+      "title": "一般利用可能な宿泊施設の有無",
+      "type": "checkbox",
+      "options": [
+        "施設内にあり（天文台附属）",
+        "近隣に提携施設あり",
+        "なし"
+      ],
       "required": false,
       "order": 33,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q036",
-      "title": "天文台の開設月（一般利用開始月）",
-      "type": "text",
-      "options": [],
+      "id": "Q122",
+      "title": "最寄りの宿泊施設との位置関係",
+      "type": "radio",
+      "options": [
+        "天文台の敷地内・併設",
+        "近隣（徒歩圏内）",
+        "近隣（車で移動）",
+        "宿泊可能な施設はない"
+      ],
       "required": false,
       "order": 34,
-      "visible": false,
+      "visible": true,
       "description": ""
     },
     {
-      "id": "Q037",
-      "title": "現在の望遠鏡の設置年（一般利用開始年）",
+      "id": "Q035",
+      "title": "天文台（望遠鏡）の開設年（西暦）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 35,
       "visible": true,
-      "description": ""
+      "description": "施設全体の開館と異なる場合、望遠鏡の一般利用開始年を入力してください。"
     },
     {
-      "id": "Q038",
-      "title": "現在の望遠鏡の設置月（一般利用開始月）",
+      "id": "Q036",
+      "title": "天文台（望遠鏡）の開設月",
       "type": "text",
       "options": [],
       "required": false,
       "order": 36,
-      "visible": false,
-      "description": ""
-    },
-    {
-      "id": "Q039",
-      "title": "据付型の天体望遠鏡がありますか",
-      "type": "radio",
-      "options": [
-        "ある",
-        "ない"
-      ],
-      "required": false,
-      "order": 37,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q040",
-      "title": "１番大きい据付望遠鏡の口径（cm）についてご記入ください",
+      "id": "Q037",
+      "title": "現在の主望遠鏡の設置年（西暦）",
+      "type": "text",
+      "options": [],
+      "required": false,
+      "order": 37,
+      "visible": true,
+      "description": "更新されている場合、現在の鏡筒が設置された年を入力してください。"
+    },
+    {
+      "id": "Q038",
+      "title": "現在の主望遠鏡の設置月",
       "type": "text",
       "options": [],
       "required": false,
@@ -400,38 +416,37 @@
       "description": ""
     },
     {
-      "id": "Q041",
-      "title": "２番に大きい独立した据付望遠鏡の口径（cm）についてご記入ください",
-      "type": "text",
-      "options": [],
-      "required": false,
-      "order": 39,
-      "visible": true,
-      "description": "なよろ市立天文台(50cm)や、西はりま天文台(60cm)、星の文化館(65cm)など、据付型望遠鏡が２つ以上ある施設を想定しております。"
-    },
-    {
-      "id": "Q042",
-      "title": "設置根拠となる法律（博物館法、図書館法、学校教育法など）",
-      "type": "checkbox",
+      "id": "Q039",
+      "title": "据付型の天体望遠鏡の有無",
+      "type": "radio",
       "options": [
-        "博物館法",
-        "図書館法",
-        "学校教育法",
-        "社会教育法",
-        "その他"
+        "ある",
+        "ない"
       ],
       "required": false,
-      "order": 40,
+      "order": 39,
       "visible": true,
       "description": ""
     },
     {
+      "id": "Q040",
+      "title": "第1望遠鏡（最大口径）の口径（cm）",
+      "type": "text",
+      "options": [],
+      "required": false,
+      "order": 40,
+      "visible": true,
+      "description": "半角数字のみ入力してください。"
+    },
+    {
       "id": "Q043",
-      "title": "光学系（屈折・反射）についてご記入ください",
+      "title": "第1望遠鏡の光学系",
       "type": "radio",
       "options": [
         "反射",
-        "屈折"
+        "屈折",
+        "カセグレン系（シュミカセ含む）",
+        "その他"
       ],
       "required": false,
       "order": 41,
@@ -440,7 +455,7 @@
     },
     {
       "id": "Q044",
-      "title": "望遠鏡メーカーについてご記入ください",
+      "title": "第1望遠鏡のメーカー",
       "type": "radio",
       "options": [
         "西村製作所",
@@ -449,6 +464,9 @@
         "タカハシ",
         "ミカゲ光器",
         "旭精工研究所",
+        "昭和機械製作所",
+        "三鷹光器",
+        "自作",
         "その他"
       ],
       "required": false,
@@ -458,52 +476,48 @@
     },
     {
       "id": "Q045",
-      "title": "鏡の製作者（例：ジンデン鏡、苗村鏡、田阪鏡など）をお答えください。",
+      "title": "鏡の製作者（職人名）",
       "type": "radio",
       "options": [
         "ジンデン鏡",
         "苗村鏡",
         "田阪鏡",
         "池谷鏡",
+        "メーカー製・不明",
         "その他"
       ],
       "required": false,
       "order": 43,
       "visible": true,
-      "description": ""
+      "description": "特殊な鏡を使用している場合のみ選択してください。"
     },
     {
-      "id": "Q046",
-      "title": "太陽望遠鏡がありますか",
-      "type": "radio",
-      "options": [
-        "はい",
-        "いいえ",
-        "わからない"
-      ],
+      "id": "Q041",
+      "title": "第2望遠鏡の口径（cm）",
+      "type": "text",
+      "options": [],
       "required": false,
       "order": 44,
       "visible": true,
-      "description": ""
+      "description": "据付型望遠鏡が複数ある場合のみ入力してください。"
     },
     {
       "id": "Q047",
-      "title": "鏡筒の数をご記入ください（台）",
+      "title": "保有する鏡筒の総数（台）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 45,
       "visible": true,
-      "description": ""
+      "description": "可搬式を含む総数を半角数字で入力してください。"
     },
     {
-      "id": "Q048",
-      "title": "投影、映像展示の有無をご記入ください",
+      "id": "Q046",
+      "title": "太陽望遠鏡の有無",
       "type": "radio",
       "options": [
         "はい",
-        "いいえ",
-        "わからない"
+        "いいえ"
       ],
       "required": false,
       "order": 46,
@@ -512,28 +526,23 @@
     },
     {
       "id": "Q049",
-      "title": "太陽望遠鏡メーカーをご記入ください",
+      "title": "太陽望遠鏡のメーカー",
       "type": "text",
-      "options": [
-        "コロナドズ",
-        "五藤光学",
-        "ニコン(日本光学)",
-        "タカハシ",
-        "その他"
-      ],
+      "options": [],
       "required": false,
       "order": 47,
       "visible": true,
-      "description": ""
+      "description": "代表的なメーカー名を入力してください（例：コロナド、ラント等）。"
     },
     {
-      "id": "Q050",
-      "title": "プラネタリウムがありますか",
-      "type": "radio",
+      "id": "Q051",
+      "title": "移動天文台・可搬機材（複数選択可）",
+      "type": "checkbox",
       "options": [
-        "はい",
-        "いいえ",
-        "わからない"
+        "移動天文車（車両一体型）",
+        "台車付望遠鏡（大型双眼鏡含む）",
+        "持ち運び可能な望遠鏡",
+        "なし"
       ],
       "required": false,
       "order": 48,
@@ -541,14 +550,14 @@
       "description": ""
     },
     {
-      "id": "Q051",
-      "title": "移動天文台がありますか。あるものをすべてお答えください。",
-      "type": "text",
+      "id": "Q096",
+      "title": "望遠鏡の保守点検（メンテナンス）頻度",
+      "type": "radio",
       "options": [
-        "移動天文車",
-        "台車付望遠鏡",
-        "持ち運び可能な望遠鏡",
-        "その他"
+        "毎年実施（メーカー点検含む）",
+        "数年おきに実施",
+        "不具合発生時のみ実施",
+        "実施していない"
       ],
       "required": false,
       "order": 49,
@@ -556,13 +565,14 @@
       "description": ""
     },
     {
-      "id": "Q052",
-      "title": "プラネの形式（光学式・デジタル式・移動式）の複数回答で設問したい",
+      "id": "Q097",
+      "title": "ドームの保守点検頻度",
       "type": "radio",
       "options": [
-        "光学式(ハイブリット含む)",
-        "デジタル式のみ",
-        "モバイルプラネタリウム"
+        "毎年実施",
+        "数年おきに実施",
+        "不具合発生時のみ実施",
+        "実施していない"
       ],
       "required": false,
       "order": 50,
@@ -570,13 +580,15 @@
       "description": ""
     },
     {
-      "id": "Q053",
-      "title": "その他設備についてあるものをチェックしてください",
-      "type": "text",
+      "id": "Q098",
+      "title": "主鏡の再メッキ・洗浄の実施状況",
+      "type": "radio",
       "options": [
-        "天文宇宙分野の展示（写真・パネル展示を含む）",
-        "天文宇宙分野に関する図書が閲覧できる図書室・読書コーナーなど",
-        "その他"
+        "10年以内に実施した",
+        "20年以内に実施した",
+        "30年以内に実施した",
+        "設置以来実施していない",
+        "不明"
       ],
       "required": false,
       "order": 51,
@@ -584,12 +596,13 @@
       "description": ""
     },
     {
-      "id": "Q054",
-      "title": "オンラインを除く、夜間観望会を実施していますか",
+      "id": "Q099",
+      "title": "施設の長期保全計画（大規模修繕計画等）の有無",
       "type": "radio",
       "options": [
-        "はい",
-        "いいえ"
+        "策定されている",
+        "策定されていない",
+        "検討中"
       ],
       "required": false,
       "order": 52,
@@ -597,9 +610,109 @@
       "description": ""
     },
     {
+      "id": "Q050",
+      "title": "プラネタリウムの有無",
+      "type": "radio",
+      "options": [
+        "はい",
+        "いいえ"
+      ],
+      "required": false,
+      "order": 53,
+      "visible": true,
+      "description": ""
+    },
+    {
+      "id": "Q052",
+      "title": "プラネタリウムの投影方式（複数選択可）",
+      "type": "checkbox",
+      "options": [
+        "光学式",
+        "デジタル式",
+        "ハイブリッド式",
+        "モバイルプラネタリウム"
+      ],
+      "required": false,
+      "order": 54,
+      "visible": true,
+      "description": ""
+    },
+    {
+      "id": "Q048",
+      "title": "太陽観測における投影・映像展示の有無",
+      "type": "radio",
+      "options": [
+        "はい",
+        "いいえ"
+      ],
+      "required": false,
+      "order": 55,
+      "visible": true,
+      "description": ""
+    },
+    {
+      "id": "Q053",
+      "title": "その他の設備（複数選択可）",
+      "type": "checkbox",
+      "options": [
+        "天文宇宙分野の展示室",
+        "図書室・読書コーナー",
+        "研修室・講堂",
+        "宿泊施設",
+        "レストラン・カフェ",
+        "ミュージアムショップ"
+      ],
+      "required": false,
+      "order": 56,
+      "visible": true,
+      "description": ""
+    },
+    {
+      "id": "Q089",
+      "title": "車いす利用者の観測室へのアクセス",
+      "type": "radio",
+      "options": [
+        "自力でアクセス可能（エレベーター・スロープあり）",
+        "介助があれば可能",
+        "アクセス不可（階段のみ）"
+      ],
+      "required": false,
+      "order": 57,
+      "visible": true,
+      "description": ""
+    },
+    {
+      "id": "Q090",
+      "title": "車いす利用者の望遠鏡による眼視観測",
+      "type": "radio",
+      "options": [
+        "接眼部が低い位置まで下がるため可能",
+        "踏み台やリフト等で対応可能",
+        "モニター観望（電視観望）で対応",
+        "対応不可"
+      ],
+      "required": false,
+      "order": 58,
+      "visible": true,
+      "description": ""
+    },
+    {
+      "id": "Q054",
+      "title": "夜間観望会の実施有無",
+      "type": "radio",
+      "options": [
+        "はい",
+        "いいえ"
+      ],
+      "required": false,
+      "order": 59,
+      "visible": true,
+      "description": "オンラインのみの場合は「いいえ」を選択してください。"
+    },
+    {
       "id": "Q055",
-      "title": "定例実施日をすべてお選びください",
-      "type": "text",
+      "title": "定例夜間観望会の実施曜日（複数選択可）",
+      "type": "checkbox",
       "options": [
         "月曜日",
         "火曜日",
@@ -608,167 +721,97 @@
         "金曜日",
         "土曜日",
         "日曜日",
-        "祝日"
+        "祝日",
+        "不定期"
       ],
-      "required": false,
-      "order": 53,
-      "visible": true,
-      "description": ""
-    },
-    {
-      "id": "Q056",
-      "title": "夜間観望会の実施時間をお答えください（冬季）",
-      "type": "text",
-      "options": [],
-      "required": false,
-      "order": 54,
-      "visible": true,
-      "description": ""
-    },
-    {
-      "id": "Q057",
-      "title": "夜間観望会の実施時間をお答えください（冬季）",
-      "type": "text",
-      "options": [],
-      "required": false,
-      "order": 55,
-      "visible": true,
-      "description": ""
-    },
-    {
-      "id": "Q058",
-      "title": "夜間観望会1回の定員の有無",
-      "type": "radio",
-      "options": [
-        "ある",
-        "ない",
-        "その他"
-      ],
-      "required": false,
-      "order": 56,
-      "visible": true,
-      "description": ""
-    },
-    {
-      "id": "Q059",
-      "title": "〔定員がある場合〕夜間観望会1回の定員",
-      "type": "text",
-      "options": [],
-      "required": false,
-      "order": 57,
-      "visible": true,
-      "description": ""
-    },
-    {
-      "id": "Q060",
-      "title": "夜間観望会の予約の有無",
-      "type": "radio",
-      "options": [
-        "必要",
-        "不要"
-      ],
-      "required": false,
-      "order": 58,
-      "visible": true,
-      "description": ""
-    },
-    {
-      "id": "Q061",
-      "title": "夜間観望会の料金",
-      "type": "radio",
-      "options": [
-        "無料",
-        "有料(入館料に含む)",
-        "有料(入館料に含まない)"
-      ],
-      "required": false,
-      "order": 59,
-      "visible": true,
-      "description": ""
-    },
-    {
-      "id": "Q062",
-      "title": "夜間観望会の料金（大人・円）",
-      "type": "text",
-      "options": [],
       "required": false,
       "order": 60,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q063",
-      "title": "夜間観望会の料金（大学生・円）",
+      "id": "Q056",
+      "title": "夜間観望会の実施時間帯：夏季（4月～9月）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 61,
       "visible": true,
-      "description": ""
+      "description": "例：19:00～21:00"
     },
     {
-      "id": "Q064",
-      "title": "夜間観望会の料金（高校生・円）",
+      "id": "Q057",
+      "title": "夜間観望会の実施時間帯：冬季（10月～3月）",
       "type": "text",
       "options": [],
       "required": false,
       "order": 62,
       "visible": true,
-      "description": ""
+      "description": "例：18:00～20:00"
     },
     {
-      "id": "Q065",
-      "title": "夜間観望会の料金（中学生・円）",
-      "type": "text",
-      "options": [],
+      "id": "Q085",
+      "title": "定例夜間観望会の実施形式",
+      "type": "radio",
+      "options": [
+        "時間枠制（開始時刻を決めて実施）",
+        "随時制（来館順に順次案内）",
+        "自由観覧制",
+        "その他"
+      ],
       "required": false,
       "order": 63,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q066",
-      "title": "夜間観望会の料金（小学生・円）",
-      "type": "text",
-      "options": [],
+      "id": "Q086",
+      "title": "（時間枠制の場合）1夜の実施回数",
+      "type": "radio",
+      "options": [
+        "1回",
+        "2回",
+        "3回",
+        "4回",
+        "5回以上",
+        "該当しない"
+      ],
       "required": false,
       "order": 64,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q067",
-      "title": "オンライン観望会の頻度",
+      "id": "Q058",
+      "title": "夜間観望会1回あたりの定員の有無",
       "type": "radio",
-      "options": [],
+      "options": [
+        "ある",
+        "ない"
+      ],
       "required": false,
       "order": 65,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q068",
-      "title": "一般の方の利用できる宿泊施設にチェックしてください",
-      "type": "checkbox",
+      "id": "Q059",
+      "title": "〔定員がある場合〕1回あたりの定員数（名）",
+      "type": "text",
       "options": [],
       "required": false,
       "order": 66,
       "visible": true,
-      "description": ""
+      "description": "半角数字のみ入力してください。"
     },
     {
-      "id": "Q069",
-      "title": "望遠鏡の置かれている施設をお答えください",
-      "type": "text",
+      "id": "Q060",
+      "title": "夜間観望会の事前予約",
+      "type": "radio",
       "options": [
-        "天文台（天文台が主体となる施設）",
-        "博物館・科学館（博物館相当の施設）",
-        "野外活動施設（少年自然の家、野外研修施設など）及び公園",
-        "社会教育施設（公民館、図（公民館、図書館、生涯学習センター、文化センターなど）",
-        "学校教育施設（教育センター、視聴覚センターなど）",
-        "児童福祉施設（児童館、児童文化センターなど）",
-        "宿泊施設（国民宿舎、ペンション、ホテルなど）",
-        "その他"
+        "必要",
+        "不要（当日受付）",
+        "団体のみ必要"
       ],
       "required": false,
       "order": 67,
@@ -776,17 +819,13 @@
       "description": ""
     },
     {
-      "id": "Q070",
-      "title": "設置主体の担当部局をお答えください(教育系、観光商工系、地域づくり系など）",
+      "id": "Q061",
+      "title": "夜間観望会の料金体系",
       "type": "radio",
       "options": [
-        "教育",
-        "福利厚生",
-        "観光",
-        "産業",
-        "企画",
-        "まちづくり",
-        "その他"
+        "無料",
+        "有料(入館料に含む)",
+        "有料(入館料とは別途必要)"
       ],
       "required": false,
       "order": 68,
@@ -794,59 +833,38 @@
       "description": ""
     },
     {
-      "id": "Q071",
-      "title": "施設の設置主体をお答えください。",
-      "type": "radio",
-      "options": [
-        "都道府県",
-        "市区",
-        "町",
-        "村",
-        "国・自治体の出資による法人及び団体",
-        "民間の事業者",
-        "その他"
-      ],
+      "id": "Q062",
+      "title": "夜間観望会の料金：大人（円）",
+      "type": "text",
+      "options": [],
       "required": false,
       "order": 69,
       "visible": true,
-      "description": ""
+      "description": "別途料金が必要な場合のみ入力。"
     },
     {
-      "id": "Q072",
-      "title": "経営主体の担当部局をお答えください(教育系、観光商工系、地域づくり系など）",
-      "type": "radio",
-      "options": [
-        "教育系",
-        "観光商工系",
-        "地域づくり系",
-        "その他"
-      ],
+      "id": "Q063",
+      "title": "夜間観望会の料金：大学生（円）",
+      "type": "text",
+      "options": [],
       "required": false,
       "order": 70,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q073",
-      "title": "施設の経営主体をお答えください。",
-      "type": "radio",
-      "options": [
-        "都道府県",
-        "市区",
-        "町",
-        "村",
-        "国・自治体の出資による法人及び団体",
-        "民間の事業者",
-        "その他"
-      ],
+      "id": "Q064",
+      "title": "夜間観望会の料金：高校生（円）",
+      "type": "text",
+      "options": [],
       "required": false,
       "order": 71,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q074",
-      "title": "施設の総入場者数をお答えください。(人)",
+      "id": "Q065",
+      "title": "夜間観望会の料金：中学生（円）",
       "type": "text",
       "options": [],
       "required": false,
@@ -855,8 +873,8 @@
       "description": ""
     },
     {
-      "id": "Q075",
-      "title": "出張観望会を除く、昼間の観望会（恒星や惑星、太陽などの観望）の参加総人数をお答えください。(人)",
+      "id": "Q066",
+      "title": "夜間観望会の料金：小学生（円）",
       "type": "text",
       "options": [],
       "required": false,
@@ -865,40 +883,64 @@
       "description": ""
     },
     {
-      "id": "Q076",
-      "title": "出張観望会を除く、夜間の観望会の参加総人数をお答えください。(人)",
-      "type": "text",
-      "options": [],
+      "id": "Q087",
+      "title": "観望会悪天候時の対応（複数選択可）",
+      "type": "checkbox",
+      "options": [
+        "プラネタリウム投影",
+        "3Dシミュレーションソフト（Mitaka等）の実演",
+        "工作教室",
+        "講話・おはなし",
+        "施設見学",
+        "中止",
+        "その他"
+      ],
       "required": false,
       "order": 74,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q077",
-      "title": "昼間に施設以外で開催した出張観望会の参加総人数をお答えください。(人)",
-      "type": "text",
-      "options": [],
+      "id": "Q088",
+      "title": "観望会における電視観望（EAA）の導入状況",
+      "type": "radio",
+      "options": [
+        "毎回・ほぼ毎回使用",
+        "時々使用・天体による",
+        "イベント時のみ使用",
+        "導入していない・検討中"
+      ],
       "required": false,
       "order": 75,
       "visible": true,
-      "description": ""
+      "description": "カメラで撮影した映像をモニター等で見せる手法。"
     },
     {
-      "id": "Q078",
-      "title": "出張観望会を除く、夜間の観望会参加総人数をお答えください。(人)",
-      "type": "text",
-      "options": [],
+      "id": "Q093",
+      "title": "観望会でのインバウンド（外国語）対応",
+      "type": "radio",
+      "options": [
+        "英語等の解説が可能なスタッフが常駐",
+        "ポケトーク等の翻訳機で対応",
+        "要望があれば対応（要予約）",
+        "対応していない"
+      ],
       "required": false,
       "order": 76,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q079",
-      "title": "夜間に施設以外で開催した出張観望会の参加総人数をお答えください。(人)",
-      "type": "text",
-      "options": [],
+      "id": "Q067",
+      "title": "オンライン観望会の実施頻度",
+      "type": "radio",
+      "options": [
+        "実施していない",
+        "年数回程度",
+        "月1回程度",
+        "週1回以上",
+        "不定期"
+      ],
       "required": false,
       "order": 77,
       "visible": true,
@@ -906,15 +948,16 @@
     },
     {
       "id": "Q080",
-      "title": "昼間に天体望遠鏡で一等星や金星、太陽などをどのくらいの頻度で観望を行っていますか。",
-      "type": "text",
+      "title": "昼間の天体観望（金星・一等星・太陽等）の実施頻度",
+      "type": "radio",
       "options": [
-        "毎日",
-        "週に数回",
+        "毎日（開館日は常時）",
+        "週に数回（土日等）",
         "週に1回",
         "月1回",
         "年に数回",
-        "不定期"
+        "不定期",
+        "実施していない"
       ],
       "required": false,
       "order": 78,
@@ -923,58 +966,67 @@
     },
     {
       "id": "Q081",
-      "title": "夜間に野外でどのくらいの頻度で星座案内や天体の観望を行っていますか。",
-      "type": "text",
+      "title": "夜間の天体観望・星座案内の実施頻度",
+      "type": "radio",
       "options": [
-        "毎日",
-        "週に数回",
+        "毎日（開館日は常時）",
+        "週に数回（土日等）",
         "週に1回",
         "月1回",
         "年に数回",
-        "不定期"
+        "不定期",
+        "実施していない"
       ],
       "required": false,
       "order": 79,
       "visible": true,
-      "description": ""
+      "description": "野外での肉眼案内を含みます。"
     },
     {
       "id": "Q082",
-      "title": "（学校教育における）出張授業（昼）の回数をお答えください。",
+      "title": "学校への出張授業（昼）の年間実施回数",
       "type": "text",
       "options": [],
       "required": false,
       "order": 80,
       "visible": true,
-      "description": ""
+      "description": "半角数字で入力してください。"
     },
     {
       "id": "Q083",
-      "title": "（学校教育における）出張観望会(夜)の回数をお答えください。",
+      "title": "学校への出張観望会（夜）の年間実施回数",
       "type": "text",
       "options": [],
       "required": false,
       "order": 81,
       "visible": true,
-      "description": ""
+      "description": "半角数字で入力してください。"
     },
     {
       "id": "Q084",
-      "title": "（社会教育における）出張授業・講演会の数の実施回数をお答えください。",
+      "title": "社会教育施設等への出張講演・観望会の年間実施回数",
       "type": "text",
       "options": [],
       "required": false,
       "order": 82,
       "visible": true,
-      "description": ""
+      "description": "公民館活動など。"
     },
     {
-      "id": "Q085",
-      "title": "定例の夜間観望会の実施方法についてお答えください。",
-      "type": "text",
+      "id": "Q121",
+      "title": "過去1年間に行った広報活動（複数選択可）",
+      "type": "checkbox",
       "options": [
-        "開始時刻を決めて時間を区切って実施している",
-        "夜間開館中は観望者が来るたびに連続的に実施している",
+        "自治体広報紙への掲載",
+        "チラシ・パンフレットの作成・配布",
+        "テレビ取材対応",
+        "ラジオ取材対応",
+        "新聞取材対応",
+        "WEBメディアへの掲載",
+        "有料広告の出稿",
+        "SNSでの発信",
+        "動画サイトへの投稿",
+        "メールマガジン発行",
         "その他"
       ],
       "required": false,
@@ -983,16 +1035,15 @@
       "description": ""
     },
     {
-      "id": "Q086",
-      "title": "（前問で「開始時刻を決めて時間を区切って実施している」と答えた場合）1夜の実施回数をお答えください",
-      "type": "radio",
+      "id": "Q117",
+      "title": "施設が発行している出版物（複数選択可）",
+      "type": "checkbox",
       "options": [
-        "1回",
-        "2回",
-        "3回",
-        "4回",
-        "5回",
-        "それ以上"
+        "研究紀要・報告書",
+        "年報・事業報告書",
+        "広報誌・ニュースレター",
+        "施設パンフレット・要覧",
+        "発行していない"
       ],
       "required": false,
       "order": 84,
@@ -1000,16 +1051,16 @@
       "description": ""
     },
     {
-      "id": "Q087",
-      "title": "観望会の悪天候時の場合、どのような対応をしていますか。",
+      "id": "Q119",
+      "title": "地域での光害対策の実施状況（複数選択可）",
       "type": "checkbox",
       "options": [
-        "プラネタリウム投影",
-        "Mitaka",
-        "工作",
-        "お話",
-        "ステラナビゲータやStellariumによる星空案内",
-        "その他"
+        "環境省「星空観察」への参加",
+        "独自の空の明るさ調査",
+        "施設照明の光害対策（上方光束抑制等）",
+        "周辺地域への街灯対策の働きかけ",
+        "星空保護区の認定（申請中含む）",
+        "特になし"
       ],
       "required": false,
       "order": 85,
@@ -1017,173 +1068,153 @@
       "description": ""
     },
     {
-      "id": "Q088",
-      "title": "観望会において、電視観望を導入していますか。",
-      "type": "radio",
+      "id": "Q118",
+      "title": "天文台設置の主な経緯・きっかけ（複数選択可）",
+      "type": "checkbox",
       "options": [
-        "ほとんど使用している",
-        "時々使用している",
-        "イベント時のみ使用している"
+        "環境省「星空の街」選定",
+        "ふるさと創生事業",
+        "寄付・寄贈",
+        "地域住民からの要望",
+        "博覧会・イベント跡地利用",
+        "教育施設の整備",
+        "観光振興",
+        "不明"
       ],
       "required": false,
       "order": 86,
       "visible": true,
-      "description": "現在見えている天体をカメラで撮影（ライブスタックを含む）し、お客様へお見せすることを電視観望とします。"
+      "description": ""
     },
     {
-      "id": "Q089",
-      "title": "車いすの方が観測室に行くことができますか。",
-      "type": "radio",
-      "options": [
-        "自由に行ける",
-        "介助する人がいれば行ける",
-        "いけない"
-      ],
+      "id": "Q074",
+      "title": "施設の年間総入場者数（人）",
+      "type": "text",
+      "options": [],
       "required": false,
       "order": 87,
       "visible": true,
-      "description": ""
+      "description": "直近の会計年度（または2024年度）の実績を半角数字で入力してください。"
     },
     {
-      "id": "Q090",
-      "title": "車いすの方が望遠鏡を覗くことができますか。",
-      "type": "radio",
-      "options": [
-        "健常者と同様にできる",
-        "介助する人がいればできる",
-        "できない",
-        "わからない",
-        "天体によって可能"
-      ],
+      "id": "Q075",
+      "title": "昼間の観望会参加総人数（人）",
+      "type": "text",
+      "options": [],
       "required": false,
       "order": 88,
       "visible": true,
-      "description": ""
+      "description": "出張観望会を除く、施設内での実績。"
     },
     {
-      "id": "Q091",
-      "title": "望遠鏡の使用目的について頻度の高い順番に３つを次の中からお答えください",
-      "type": "radio",
-      "options": [
-        "天体観望",
-        "太陽観測",
-        "広報用素材撮影",
-        "学校教材の作成",
-        "新天体の捜索(彗星",
-        "小惑星",
-        "新星",
-        "超新星など)",
-        "新天体の確認、追跡観測",
-        "星食現象の観測",
-        "変光星の観測",
-        "銀河系外天体の観測",
-        "望遠鏡や観測装置の調整"
-      ],
+      "id": "Q076",
+      "title": "夜間の観望会参加総人数（人）",
+      "type": "text",
+      "options": [],
       "required": false,
       "order": 89,
       "visible": true,
-      "description": ""
+      "description": "出張観望会を除く、施設内での実績。"
     },
     {
-      "id": "Q092",
-      "title": "どのくらいの頻度で望遠鏡を使用していますか。",
-      "type": "radio",
-      "options": [
-        "晴れた日のほぼ毎日",
-        "晴れた日の半分",
-        "晴れた日の3割程度",
-        "晴れた日の1割以下",
-        "わからない"
-      ],
+      "id": "Q077",
+      "title": "昼間の出張観望会参加総人数（人）",
+      "type": "text",
+      "options": [],
       "required": false,
       "order": 90,
       "visible": true,
-      "description": ""
+      "description": "施設外での実施分。"
     },
     {
-      "id": "Q093",
-      "title": "観望会では、英語での解説など、外国語対応をしていますか",
-      "type": "radio",
-      "options": [
-        "はい",
-        "いいえ",
-        "要望があれば対応できる"
-      ],
+      "id": "Q078",
+      "title": "夜間の出張観望会参加総人数（人）",
+      "type": "text",
+      "options": [],
       "required": false,
       "order": 91,
       "visible": true,
-      "description": ""
+      "description": "施設外での実施分。"
     },
     {
-      "id": "Q094",
-      "title": "人件費、光熱費を除いた天文台の運営費についてお答えください。",
-      "type": "radio",
-      "options": [
-        "0円",
-        "200万円",
-        "200万円以上～500万円未満",
-        "500万円以上～1000万円未満",
-        "1000万円以上"
-      ],
+      "id": "Q079",
+      "title": "オンライン観望会の視聴者数（人）",
+      "type": "text",
+      "options": [],
       "required": false,
       "order": 92,
       "visible": true,
-      "description": ""
+      "description": "把握している場合のみ入力。"
     },
     {
-      "id": "Q095",
-      "title": "望遠鏡やドームの保守整備費（維持管理費）についてお答えください",
+      "id": "Q091-1",
+      "title": "望遠鏡の主たる使用目的（最も頻度が高いもの）",
       "type": "radio",
       "options": [
-        "定常的に予算化されている",
-        "基本的にないが、必要に応じて予算化される",
-        "設立当初はあったが",
-        "その後持たなくなった",
-        "設立当初からない"
+        "天体観望（社会教育・観光）",
+        "太陽観測",
+        "広報用素材撮影",
+        "学校教材の作成",
+        "新天体の捜索・観測",
+        "変光星等の学術観測",
+        "機器の調整・試験",
+        "その他"
       ],
       "required": false,
       "order": 93,
       "visible": true,
-      "description": ""
+      "description": "1番目にお選びください。"
     },
     {
-      "id": "Q096",
-      "title": "望遠鏡の保守整備の頻度についてお答えください。",
+      "id": "Q091-2",
+      "title": "望遠鏡の主たる使用目的（2番目に頻度が高いもの）",
       "type": "radio",
       "options": [
-        "年度内に定期点検している",
-        "数年おきに実施している",
-        "不具合が発生したときのみに対応"
+        "天体観望（社会教育・観光）",
+        "太陽観測",
+        "広報用素材撮影",
+        "学校教材の作成",
+        "新天体の捜索・観測",
+        "変光星等の学術観測",
+        "機器の調整・試験",
+        "その他",
+        "該当なし"
       ],
       "required": false,
       "order": 94,
       "visible": true,
-      "description": ""
+      "description": "2番目にお選びください。"
     },
     {
-      "id": "Q097",
-      "title": "ドームの保守整備の頻度についてお答えください。",
+      "id": "Q091-3",
+      "title": "望遠鏡の主たる使用目的（3番目に頻度が高いもの）",
       "type": "radio",
       "options": [
-        "年度内に定期点検している",
-        "数年おきに実施している",
-        "不具合が発生したときのみに対応"
+        "天体観望（社会教育・観光）",
+        "太陽観測",
+        "広報用素材撮影",
+        "学校教材の作成",
+        "新天体の捜索・観測",
+        "変光星等の学術観測",
+        "機器の調整・試験",
+        "その他",
+        "該当なし"
       ],
       "required": false,
       "order": 95,
       "visible": true,
-      "description": ""
+      "description": "3番目にお選びください。"
     },
     {
-      "id": "Q098",
-      "title": "鏡の再メッキの頻度（予定を含む）をお答えください。",
+      "id": "Q092",
+      "title": "望遠鏡の稼働頻度",
       "type": "radio",
       "options": [
-        "10年",
-        "20年",
-        "30年",
-        "40年",
-        "その他"
+        "晴天時はほぼ毎日",
+        "晴天時の半分程度",
+        "晴天時の3割程度",
+        "イベント時のみ（1割以下）",
+        "ほとんど稼働していない"
       ],
       "required": false,
       "order": 96,
@@ -1191,28 +1222,35 @@
       "description": ""
     },
     {
-      "id": "Q099",
-      "title": "長期保全計画（再メッキの頻度やオーバーホール、プラネ）を立てていますか。",
+      "id": "Q069",
+      "title": "望遠鏡が設置されている施設の主たる区分",
       "type": "radio",
       "options": [
-        "はい",
-        "いいえ"
+        "天文台（単独施設）",
+        "博物館・科学館",
+        "野外活動施設（自然の家等）・公園",
+        "社会教育施設（公民館・図書館等）",
+        "学校教育施設",
+        "児童福祉施設（児童館等）",
+        "宿泊施設（ホテル・ペンション等）",
+        "その他"
       ],
       "required": false,
       "order": 97,
       "visible": true,
-      "description": ""
+      "description": "最も実態に近いものを1つ選んでください。"
     },
     {
-      "id": "Q100",
-      "title": "観測は勤務時間として認められますか。",
+      "id": "Q071",
+      "title": "施設の設置主体",
       "type": "radio",
       "options": [
-        "すべて認められる",
-        "半分以上認められる",
-        "ほとんど認められない",
-        "全く認められない",
-        "わからない"
+        "都道府県",
+        "市区町村",
+        "国・独立行政法人",
+        "民間企業・個人",
+        "財団・社団・NPO",
+        "その他"
       ],
       "required": false,
       "order": 98,
@@ -1220,39 +1258,46 @@
       "description": ""
     },
     {
-      "id": "Q101",
-      "title": "望遠鏡のを操作する人数、常勤、非常勤、ボランティア、正規、非正規",
-      "type": "text",
-      "options": [],
+      "id": "Q070",
+      "title": "設置主体の担当部局",
+      "type": "radio",
+      "options": [
+        "教育委員会（社会教育・生涯学習）",
+        "首長部局（観光・商工）",
+        "首長部局（企画・政策）",
+        "民間・その他"
+      ],
       "required": false,
       "order": 99,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q102",
-      "title": "（正規職員）天文台の担当者の経歴についてすべてお答えください [1人目]",
-      "type": "text",
-      "options": [],
+      "id": "Q073",
+      "title": "施設の経営主体（指定管理者等）",
+      "type": "radio",
+      "options": [
+        "都道府県",
+        "市区町村",
+        "外郭団体（財団・社団等）",
+        "民間企業",
+        "NPO・ボランティア団体",
+        "その他"
+      ],
       "required": false,
       "order": 100,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q103",
-      "title": "天文台に関わる正規職員が行っている業務はなんですか。",
-      "type": "text",
+      "id": "Q072",
+      "title": "経営・運営主体の担当部局",
+      "type": "radio",
       "options": [
-        "受付",
-        "清掃",
-        "お客様案内",
-        "プラネタリウム投影",
-        "学校対応",
-        "広報対応",
-        "観測",
-        "撮影",
-        "研究"
+        "直営（設置主体と同じ）",
+        "指定管理者（民間企業）",
+        "指定管理者（財団・社団等）",
+        "その他"
       ],
       "required": false,
       "order": 101,
@@ -1260,16 +1305,13 @@
       "description": ""
     },
     {
-      "id": "Q104",
-      "title": "お持ちの資格は何ですか",
-      "type": "checkbox",
+      "id": "Q105",
+      "title": "指定管理者制度の導入状況",
+      "type": "radio",
       "options": [
-        "学芸員",
-        "教員",
-        "博士",
-        "修士",
-        "学士",
-        "その他"
+        "導入している",
+        "導入していない（直営）",
+        "検討中"
       ],
       "required": false,
       "order": 102,
@@ -1277,37 +1319,37 @@
       "description": ""
     },
     {
-      "id": "Q105",
-      "title": "あなたの施設は指定管理者制度を導入していますか。",
-      "type": "radio",
-      "options": [
-        "導入している",
-        "導入が検討されている",
-        "導入していない",
-        "わからない"
-      ],
+      "id": "Q106",
+      "title": "(導入している場合)指定管理の契約期間（年）",
+      "type": "text",
+      "options": [],
       "required": false,
       "order": 103,
       "visible": true,
-      "description": ""
+      "description": "半角数字で入力してください。"
     },
     {
-      "id": "Q106",
-      "title": "(導入されている場合)指定管理者の委託契約期間は何年ですか？",
-      "type": "text",
-      "options": [],
+      "id": "Q107",
+      "title": "指定管理者の選定方法",
+      "type": "radio",
+      "options": [
+        "公募プロポーザル",
+        "非公募（特命随意契約）",
+        "その他"
+      ],
       "required": false,
       "order": 104,
       "visible": true,
       "description": ""
     },
     {
-      "id": "Q107",
-      "title": "指定管理者選定の際に一般公募されましたか",
+      "id": "Q108",
+      "title": "前回調査（2018年）以降の運営団体の変更",
       "type": "radio",
       "options": [
-        "公募した",
-        "公募しなかった"
+        "変更あり",
+        "変更なし",
+        "新規施設のため該当なし"
       ],
       "required": false,
       "order": 105,
@@ -1315,12 +1357,14 @@
       "description": ""
     },
     {
-      "id": "Q108",
-      "title": "前回調査(平成17年・2018年)以降、で委託される団体が変わりましたか",
+      "id": "Q109",
+      "title": "指定管理者の変更に伴う職員の入れ替わり",
       "type": "radio",
       "options": [
-        "変わった",
-        "変わっていない"
+        "全員・ほとんどが入れ替わった",
+        "一部が入れ替わった",
+        "継続雇用されている",
+        "該当なし"
       ],
       "required": false,
       "order": 106,
@@ -1328,12 +1372,15 @@
       "description": ""
     },
     {
-      "id": "Q109",
-      "title": "前回調査以降、指定管理選定等により職員が変わりましたか？",
-      "type": "radio",
+      "id": "Q042",
+      "title": "設置根拠となる法律（複数選択可）",
+      "type": "checkbox",
       "options": [
-        "変わった",
-        "変わっていない"
+        "博物館法",
+        "図書館法",
+        "学校教育法",
+        "社会教育法",
+        "その他"
       ],
       "required": false,
       "order": 107,
@@ -1342,24 +1389,27 @@
     },
     {
       "id": "Q110",
-      "title": "〔公が設置した施設の場合のみ〕あなたの施設の設置目的を定めた「条例」がありますか",
+      "title": "施設の設置目的を定めた条例の有無",
       "type": "radio",
       "options": [
         "ある",
-        "ない"
+        "ない",
+        "不明"
       ],
       "required": false,
       "order": 108,
       "visible": true,
-      "description": ""
+      "description": "公的施設の場合のみ回答。"
     },
     {
-      "id": "Q111",
-      "title": "あなたの施設の運営に意見や助言を与える諮問的役割を持つ運営協議会または同等の委員会がありますか",
+      "id": "Q115",
+      "title": "博物館法上の位置づけ",
       "type": "radio",
       "options": [
-        "ある",
-        "ない"
+        "登録博物館",
+        "博物館相当施設",
+        "博物館類似施設",
+        "指定なし（博物館法外）"
       ],
       "required": false,
       "order": 109,
@@ -1367,18 +1417,14 @@
       "description": ""
     },
     {
-      "id": "Q112",
-      "title": "あなたの施設に求められている対外的な評価として、最も重要だと思われる順番に３つ答えてください [1番]",
-      "type": "checkbox",
+      "id": "Q116",
+      "title": "今後の博物館登録への意向",
+      "type": "radio",
       "options": [
-        "利益",
-        "利用者数",
-        "経費の縮減",
-        "情報発信と公開",
-        "市民参画や地域との連携",
-        "生涯学習や学校教育",
-        "調査・研究",
-        "その他"
+        "登録を目指している",
+        "現状維持",
+        "検討中",
+        "目指していない"
       ],
       "required": false,
       "order": 110,
@@ -1386,15 +1432,15 @@
       "description": ""
     },
     {
-      "id": "Q113",
-      "title": "あなたの施設には、来館者や地域の人たちが参加できる通年の同好会や、天文台を運営するためのボランティア組織はありますか。あるものすべてお選びください",
+      "id": "Q094",
+      "title": "人件費・光熱費を除いた天文台の年間事業予算",
       "type": "radio",
       "options": [
-        "施設が運営をする同好会・友の会がある",
-        "施設が運営をするボランティア組織がある",
-        "施設が公認する同好会・友の会がある",
-        "施設が公認するボランティア組織がある",
-        "同好会やボランティア組織はない"
+        "0円（予算なし）",
+        "200万円未満",
+        "200万円以上～500万円未満",
+        "500万円以上～1000万円未満",
+        "1000万円以上"
       ],
       "required": false,
       "order": 111,
@@ -1402,28 +1448,28 @@
       "description": ""
     },
     {
-      "id": "Q114",
-      "title": "（ボランティア組織・同好会があるとお答えした方）ボランティア組織は、天文台の運営に関してどの程度必要ですか",
-      "type": "radio",
-      "options": [
-        "ボランティア組織がないと運営が成り立たない",
-        "繁忙期の補助的な役割",
-        "ボランティアがいなくても運営ができる"
-      ],
+      "id": "Q101",
+      "title": "天体観望会等の運営に関わるスタッフの人数（内訳）",
+      "type": "text",
+      "options": [],
       "required": false,
       "order": 112,
       "visible": true,
-      "description": ""
+      "description": "「正規：○名、非正規：○名、ボランティア：○名」のように記入してください。"
     },
     {
-      "id": "Q115",
-      "title": "博物館法での施設種別をお答えください。",
-      "type": "radio",
+      "id": "Q103",
+      "title": "正規職員の主な担当業務（複数選択可）",
+      "type": "checkbox",
       "options": [
-        "登録博物館",
-        "相当施設",
-        "類似施設",
-        "博物館ではない"
+        "受付・事務",
+        "施設管理・清掃",
+        "利用者案内",
+        "プラネタリウム投影",
+        "学校対応",
+        "広報・SNS",
+        "観測・研究",
+        "その他"
       ],
       "required": false,
       "order": 113,
@@ -1431,29 +1477,32 @@
       "description": ""
     },
     {
-      "id": "Q116",
-      "title": "博物館登録をめざしていますか",
-      "type": "radio",
+      "id": "Q104",
+      "title": "職員が保有する資格・学位（複数選択可）",
+      "type": "checkbox",
       "options": [
-        "はい",
-        "いいえ",
-        "検討中"
+        "学芸員",
+        "教員免許",
+        "博士号",
+        "修士号",
+        "学士",
+        "社会教育主事",
+        "司書",
+        "特になし"
       ],
       "required": false,
       "order": 114,
       "visible": true,
-      "description": ""
+      "description": "施設全体での保有状況をお答えください。"
     },
     {
-      "id": "Q117",
-      "title": "施設の出版物についてお答えください。",
-      "type": "checkbox",
+      "id": "Q100",
+      "title": "職員の研究・観測活動の扱い",
+      "type": "radio",
       "options": [
-        "研究報告誌",
-        "事業報告誌",
-        "施設の広報誌",
-        "施設パンフレット",
-        "その他"
+        "業務として認められている",
+        "一部認められている（時間外等）",
+        "業務としては認められていない"
       ],
       "required": false,
       "order": 115,
@@ -1461,17 +1510,14 @@
       "description": ""
     },
     {
-      "id": "Q118",
-      "title": "天文台ができたきっかけをお答えください。",
-      "type": "checkbox",
+      "id": "Q113",
+      "title": "ボランティア組織・友の会の有無",
+      "type": "radio",
       "options": [
-        "星空の街に選定された",
-        "ふるさと創生事業",
-        "企業や個人からの寄付",
-        "地域からの要望",
-        "博覧会",
-        "不明",
-        "その他"
+        "施設運営のボランティアがある",
+        "施設公認の友の会・同好会がある",
+        "両方ある",
+        "いずれもない"
       ],
       "required": false,
       "order": 116,
@@ -1479,20 +1525,88 @@
       "description": ""
     },
     {
-      "id": "Q119",
-      "title": "光害対策として天文台を含む地域で行なっていることはありますか？",
-      "type": "checkbox",
+      "id": "Q114",
+      "title": "（ある場合）ボランティアの運営への関与度",
+      "type": "radio",
       "options": [
-        "環境省のデジタルカメラによる星空観察に参加",
-        "独自で継続的な光害計測を実施",
-        "施設に光害対応照明を使用している",
-        "近隣地域に光害対応照明を設置している",
-        "星空保護区に認定されている(認定を計画している)"
+        "ボランティアなしでは運営不可（主体的）",
+        "イベント時等の補助的役割",
+        "運営には直接関与していない"
       ],
       "required": false,
       "order": 117,
       "visible": true,
       "description": ""
+    },
+    {
+      "id": "Q111",
+      "title": "外部有識者による運営協議会・委員会の有無",
+      "type": "radio",
+      "options": [
+        "ある",
+        "ない"
+      ],
+      "required": false,
+      "order": 118,
+      "visible": true,
+      "description": ""
+    },
+    {
+      "id": "Q112-1",
+      "title": "施設運営において最も重視している評価指標（1番目）",
+      "type": "radio",
+      "options": [
+        "入館料収入（利益）",
+        "利用者数",
+        "経費削減",
+        "情報発信・広報効果",
+        "地域連携・市民参画",
+        "教育普及（学校・生涯学習）",
+        "調査・研究成果",
+        "その他"
+      ],
+      "required": false,
+      "order": 119,
+      "visible": true,
+      "description": "最も重視しているものを1つ選んでください。"
+    },
+    {
+      "id": "Q112-2",
+      "title": "施設運営において重視している評価指標（2番目）",
+      "type": "radio",
+      "options": [
+        "入館料収入（利益）",
+        "利用者数",
+        "経費削減",
+        "情報発信・広報効果",
+        "地域連携・市民参画",
+        "教育普及（学校・生涯学習）",
+        "調査・研究成果",
+        "その他"
+      ],
+      "required": false,
+      "order": 120,
+      "visible": true,
+      "description": "2番目に重視しているものを1つ選んでください。"
+    },
+    {
+      "id": "Q112-3",
+      "title": "施設運営において重視している評価指標（3番目）",
+      "type": "radio",
+      "options": [
+        "入館料収入（利益）",
+        "利用者数",
+        "経費削減",
+        "情報発信・広報効果",
+        "地域連携・市民参画",
+        "教育普及（学校・生涯学習）",
+        "調査・研究成果",
+        "その他"
+      ],
+      "required": false,
+      "order": 121,
+      "visible": true,
+      "description": "3番目に重視しているものを1つ選んでください。"
     }
   ]
 }
