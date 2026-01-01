@@ -311,8 +311,10 @@
 	document.getElementById('saveDraftBtn').addEventListener('click', async () => {
 		const savedAt = Storage.saveDraft(session.facility_id, answers);
 
-		const saveMessage = document.getElementById('saveMessage');
 		const date = new Date(savedAt);
+		alert(`一時保存が完了しました。\n\n保存日時: ${date.toLocaleString('ja-JP')}\n\n※このデータはこのPCのブラウザに保存されています。`);
+
+		const saveMessage = document.getElementById('saveMessage');
 		saveMessage.textContent = `一時保存が完了しました。 (${date.toLocaleString('ja-JP')})`;
 		saveMessage.style.display = 'block';
 
